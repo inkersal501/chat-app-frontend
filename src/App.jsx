@@ -1,11 +1,21 @@
-import './App.css';
-import Auth from './components/Auth';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import './App.css';  
+import Index from './pages/Index';
+import Home from './pages/Home';
 
 function App() {
+
   return (
-    <div className="flex items-center justify-center min-h-screen w-full bg-gradient-to-r from-blue-100 to-purple-200 px-4">
-      <Auth />
-    </div>
+    <>
+    <BrowserRouter>
+      <Routes>
+
+        <Route path='/' element={<Index />} />
+        <Route path='/home' element={<Home />} />
+
+      </Routes>
+    </BrowserRouter>
+    </> 
   );
 }
 

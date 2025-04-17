@@ -1,12 +1,13 @@
 import axios from "axios";
 import apiEndpoint from "./config";
 import { toast } from "react-toastify";
+
 const signIn = async (req)=>{ 
     try {
         const result = await axios.post(`${apiEndpoint}/user/signin`, {email: req.email, password: req.password});
         if(result.status === 200){
-            toast.success(result.data.msg);
-            return true;
+            toast.success(result.data.msg);        
+            return result.data.token;
         }            
     } catch (error) {  
         toast.error(error.response.data.msg);
