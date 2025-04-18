@@ -16,7 +16,7 @@ function Index() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-full bg-blue-200 px-4">
+    <div className="flex items-center justify-center min-h-screen w-full bg-slate-900 px-4">
       <Auth />
     </div>
   );

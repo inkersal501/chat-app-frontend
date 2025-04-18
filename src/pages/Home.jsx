@@ -1,15 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { logout } from '../redux/authSlice';
-import { useNavigate } from 'react-router-dom';
- 
+
+import Sidebar from '../components/Sidebar';
+import ChatWindow from '../components/ChatWindow';
+
 function Home() {
-    const dispatch = useDispatch(); 
-    const navigate = useNavigate();
+   
     return (
-        <div className='bg-black'>
-        <div>Home</div>
-        <a href="#" onClick={()=>{ dispatch(logout()); navigate("/")}}>Logout</a>
+        <div className='bg-black min-h-100 flex w-full'>
+            <Sidebar />
+            <ChatWindow />             
         </div>
 
     )

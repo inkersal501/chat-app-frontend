@@ -47,7 +47,7 @@ const Auth = () => {
   return (
     <div className="w-full">
       
-        <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md mx-auto relative border-e-4 border-b-4 border-[#1A2980]">
+        <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md mx-auto relative border-e-4 border-b-4 border-slate-400">
 
           {loading && (
             <div className="absolute inset-0 bg-opacity-50 backdrop-blur-[1.5px] flex items-center justify-center z-50 rounded-2xl">
