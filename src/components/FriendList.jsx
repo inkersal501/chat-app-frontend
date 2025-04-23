@@ -1,8 +1,7 @@
- 
 const FriendList = () => (
-    <div className="space-y-4">
+    <div className="space-y-0">
         {['Friend1', 'Friend2', 'Friend3'].map((name, idx) => (
-            <div key={idx} className="bg-slate-700 p-3 rounded-md hover:bg-slate-600 transition cursor-pointer">
+            <div key={idx} className="bg-slate-800 p-4 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer">
                 {name}
             </div>
         ))}
