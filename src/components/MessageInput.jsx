@@ -10,7 +10,7 @@ function MessageInput() {
         placeholder="Type a message"
       />
       <div className="ms-4">
-        <IconButton icon={<IoSend />} active={false} /> 
+        <IconButton icon={<IoSend />} tooltip={"Send"} position="top" active={false} /> 
       </div>
     </div>
   )
