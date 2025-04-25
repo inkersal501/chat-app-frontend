@@ -1,17 +1,17 @@
-import React from 'react';
-
 import Sidebar from '../components/Sidebar';
 import ChatWindow from '../components/ChatWindow';
+import TopBar from '../components/TopBar';
 
 function Home() {
-   
     return (
-        <div className='bg-black min-h-100 flex w-full'>
-            <Sidebar />
-            <ChatWindow />             
+        <div className="h-screen w-screen flex flex-col">
+            <TopBar />
+            <div className='flex flex-1 overflow-hidden'>
+                <Sidebar />
+                <ChatWindow />
+            </div>
         </div>
-
-    )
+    );
 }
 
 export default Home;
