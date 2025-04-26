@@ -5,13 +5,15 @@ import connect from "../js/connect";
 import UserCard from "./UserCard";
 
 function AddFriends() {
+  
   const [sugg, setSugg] = useState([]);
   const user = useSelector(selectUser);
 
   useEffect(()=>{
     async function getSuggestions () {
       const result = await connect.getSuggestions(user.token);
-      setSugg(result);
+      if(result.length>0)
+        setSugg(result);
     }
     getSuggestions();
     //eslint-disable-next-line

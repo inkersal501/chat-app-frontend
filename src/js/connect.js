@@ -20,10 +20,11 @@ const getSuggestions = async (userToken) => {
 
 const sendRequest = async (toUserId, userToken) => {
     try {
-        const result = await axios.post(`${apiEndpoint}/connect/request/:${toUserId}`, { 
+        const result = await axios.post(`${apiEndpoint}/connect/request/${toUserId}`,{}, { 
             headers: { Authorization: `Bearer ${userToken}`}
         });
-        if(result.status === 200){        
+        if(result.status === 200){       
+            toast.success(result.data.msg); 
             return true;
         }            
     } catch (error) {  
@@ -31,4 +32,18 @@ const sendRequest = async (toUserId, userToken) => {
         return false;
     }
 };
-export default { getSuggestions, sendRequest };
+
+const getRequests = async (userToken)=> {
+    try {
+        const result = await axios.get(`${apiEndpoint}/connect/requests`, { 
+            headers: { Authorization: `Bearer ${userToken}`}
+        });
+        if(result.status === 200){        
+            return result.data.list;
+        }            
+    } catch (error) {  
+        toast.error(error.response.data.msg);
+        return false;
+    }
+}
+export default { getSuggestions, sendRequest, getRequests };
