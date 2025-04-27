@@ -1,3 +1,5 @@
+import Button from "./Button";
+
 function UserCard({ name, type = "default", onActionClick }) {
 
   const getButtonLabel = () => {
@@ -23,21 +25,12 @@ function UserCard({ name, type = "default", onActionClick }) {
       </div>
 
       {label && (
-        <button
-          onClick={onActionClick}
-          className={`px-2 py-1 text-sm rounded-md font-medium cursor-pointer
-            ${
-              type === "send"
-                ? "bg-blue-600 hover:bg-blue-700"
-                : type === "accept"
-                ? "bg-green-600 hover:bg-green-700"
-                : "bg-gray-500 cursor-default"
-            }
-            text-white transition duration-150`}
+        <Button
+          onClick={onActionClick} 
           disabled={type === "friends"}
         >
           {label}
-        </button>
+        </Button>
       )}
     </div>
   );

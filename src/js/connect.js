@@ -39,11 +39,26 @@ const getRequests = async (userToken)=> {
             headers: { Authorization: `Bearer ${userToken}`}
         });
         if(result.status === 200){        
-            return result.data.list;
+            return {status: true, requests: result.data.list};
+        }            
+    } catch (error) {  
+        // toast.error(error.response.data.msg);
+        return {status: false, msg: error.response.data.msg};
+    }
+}
+
+const acceptRequest = async (fromUserId, userToken) => {
+    try {
+        const result = await axios.post(`${apiEndpoint}/connect/accept/${fromUserId}`,{}, { 
+            headers: { Authorization: `Bearer ${userToken}`}
+        });
+        if(result.status === 200){       
+            // toast.success(result.data.msg); 
+            return true;
         }            
     } catch (error) {  
         toast.error(error.response.data.msg);
         return false;
     }
-}
-export default { getSuggestions, sendRequest, getRequests };
+};
+export default { getSuggestions, sendRequest, getRequests, acceptRequest };

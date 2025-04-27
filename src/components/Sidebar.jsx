@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { FaComments, FaUserFriends, FaCog, FaSignOutAlt } from "react-icons/fa";
@@ -10,7 +9,8 @@ import SettingsPanel from './SettingsPanel';
 import IconButton from './IconButton';
 import AddFriends from './AddFriends';
 import AcceptFriends from './AcceptFriends';
-
+import { sidebarActiveTab, updateSidebarActiveTab } from '../redux/chatSlice';
+ 
 const sidebarTabs = [
   {
     key: "chats",
@@ -45,9 +45,10 @@ const sidebarTabs = [
 ];
 
 function Sidebar() {
-  const [activeTab, setActiveTab] = useState('chats');
+ 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const activeTab = useSelector(sidebarActiveTab);
 
   return (
     <div className="w-2/6 h-full flex overflow-hidden">
@@ -59,7 +60,7 @@ function Sidebar() {
             icon={tab.icon}
             tooltip={tab.label}
             active={activeTab === tab.key}
-            onClick={() => setActiveTab(tab.key)}
+            onClick={() => dispatch(updateSidebarActiveTab(tab.key))}
             position="right"
           />
         ))}
