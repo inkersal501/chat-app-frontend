@@ -21,9 +21,9 @@ const Auth = () => {
     
     try {
       if (isLogin) {
-        const token = await auth.signIn(data);
-        if (token) {
-          dispatch(login({ token }));
+        const user = await auth.signIn(data);
+        if (user) {
+          dispatch(login({ ...user }));
           navigate("/home");
         }
       } else {

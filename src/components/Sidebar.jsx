@@ -50,6 +50,11 @@ function Sidebar() {
   const navigate = useNavigate();
   const activeTab = useSelector(sidebarActiveTab);
 
+  const getActiveLabel = (key)=>{
+    const filter = sidebarTabs.filter((item)=>item.key===key)[0]; 
+    return filter.label;
+  };
+
   return (
     <div className="w-2/6 h-full flex overflow-hidden">
       {/* Icon panel */}
@@ -79,7 +84,7 @@ function Sidebar() {
 
       {/* Content area */}
       <div className="flex-1 bg-slate-800 text-white overflow-y-auto border-e border-slate-600">
-        <h2 className="text-xl font-bold capitalize p-4 border-b border-slate-700">{activeTab}</h2>
+        <h2 className="text-xl font-bold capitalize p-4 border-b border-slate-700">{getActiveLabel(activeTab)}</h2>
         {sidebarTabs.map((tab) =>
           activeTab === tab.key ? <div key={tab.key}>{tab.component}</div> : null
         )}

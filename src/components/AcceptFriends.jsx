@@ -19,8 +19,8 @@ function AcceptFriends() {
       const result = await connect.getRequests(user.token);
       if(result.status && result.requests.length>0){
         setReqUsers(result.requests);
-      }else if(!result.status || (result.status && result.requests.length===0)) {
-        setMsg("No requests found.");
+      }else if(!result.status) {
+        setMsg(result.msg);
       }        
     }
     getRequests();
@@ -36,7 +36,7 @@ function AcceptFriends() {
     <div className="space-y-0">
       <div className='bg-slate-900'>
         <input 
-          className="w-full bg-slate-800 px-4 py-2 text-white font-medium focus-visible:outline-none" 
+          className="w-full bg-slate-700 px-4 py-2 text-white font-medium focus-visible:outline-none" 
           type="text" 
           placeholder="Search..."
         />

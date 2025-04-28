@@ -7,7 +7,7 @@ const signIn = async (req)=>{
         const result = await axios.post(`${apiEndpoint}/user/signin`, {email: req.email, password: req.password});
         if(result.status === 200){
             toast.success(result.data.msg);        
-            return result.data.token;
+            return result.data.user;
         }            
     } catch (error) {  
         toast.error(error.response.data.msg);

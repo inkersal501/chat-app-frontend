@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ToastContainer position="top-center" autoClose={3000} />
+    <ToastContainer position="top-center" autoClose={2000} />
     <Provider store={store}>
       <App />
     </Provider>

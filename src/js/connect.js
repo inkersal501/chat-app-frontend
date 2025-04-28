@@ -9,12 +9,11 @@ const getSuggestions = async (userToken) => {
         const result = await axios.get(`${apiEndpoint}/connect/suggestions`, { 
             headers: { Authorization: `Bearer ${userToken}`}
         });
-        if(result.status === 200){        
-            return result.data.list;
+        if(result.status === 200){      
+            return {status: true, suggestions: result.data.list};
         }            
     } catch (error) {  
-        toast.error(error.response.data.msg);
-        return false;
+        return {status: false, msg: error.response.data.msg};
     }
 };
 
