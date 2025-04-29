@@ -38,7 +38,7 @@ const FriendList = () => {
             )}
 
             {friends.length > 0 && friends.map((user, idx) => (
-                <div key={idx} className="bg-slate-800 p-4 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer">
+                <div key={idx} className="bg-slate-800 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer">
                     <UserCard name={user.username} type="friends" />
                 </div>
             ))}

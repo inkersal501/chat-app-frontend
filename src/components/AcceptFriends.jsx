@@ -63,7 +63,7 @@ function AcceptFriends() {
       {reqUsers.map((user, idx) => (
         <div
           key={idx}
-          className="bg-slate-800 p-4 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer"
+          className="bg-slate-800 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer"
         >
           <UserCard
             name={user.username}

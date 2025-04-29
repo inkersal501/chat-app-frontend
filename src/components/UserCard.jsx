@@ -1,5 +1,6 @@
 import { FaComments } from "react-icons/fa";
 import Button from "./Button";
+import IconButton from "./IconButton";
 
 function UserCard({ name, type = "default", onActionClick }) {
   const getStatusContent = () => {
@@ -12,7 +13,7 @@ function UserCard({ name, type = "default", onActionClick }) {
         );
       case "request-sent":
         return (
-          <div className="flex items-center gap-2 text-green-400 font-medium">
+          <div className="flex items-center gap-2 text-green-400 font-medium text-xs">
             <svg
               className="w-5 h-5 text-green-400"
               fill="currentColor"
@@ -35,7 +36,7 @@ function UserCard({ name, type = "default", onActionClick }) {
         );
       case "request-accepted":
         return (
-          <div className="flex items-center gap-2 text-green-400 font-medium">
+          <div className="flex items-center gap-2 text-green-400 font-medium text-xs">
             <svg
               className="w-5 h-5 text-green-400"
               fill="currentColor"
@@ -52,8 +53,14 @@ function UserCard({ name, type = "default", onActionClick }) {
         );
       case "friends":
         return (
-          <div className="text-center font-medium"> 
-            <FaComments />
+          <div className="text-center"> 
+            <IconButton 
+              icon={<FaComments />}
+              tooltip={""}
+              active={""}
+              onClick={()=>{}}
+            />
+            
           </div>
         );
       default:
@@ -62,7 +69,7 @@ function UserCard({ name, type = "default", onActionClick }) {
   };
 
   return (
-    <div className="flex items-center justify-between gap-3 px-2 py-2 rounded-lg hover:bg-slate-700 transition duration-200 cursor-pointer">
+    <div className="flex items-center justify-between gap-3 px-2 py-2 hover:bg-slate-700 transition duration-200 cursor-pointer">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#5856d6] text-white font-semibold text-lg">
           {name[0]}
