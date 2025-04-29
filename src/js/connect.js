@@ -22,12 +22,11 @@ const sendRequest = async (toUserId, userToken) => {
         const result = await axios.post(`${apiEndpoint}/connect/request/${toUserId}`,{}, { 
             headers: { Authorization: `Bearer ${userToken}`}
         });
-        if(result.status === 200){       
-            toast.success(result.data.msg); 
+        if(result.status === 200){        
             return true;
         }            
     } catch (error) {  
-        toast.error(error.response.data.msg);
+        toast.error(error.response.data.msg); 
         return false;
     }
 };
@@ -51,8 +50,7 @@ const acceptRequest = async (fromUserId, userToken) => {
         const result = await axios.post(`${apiEndpoint}/connect/accept/${fromUserId}`,{}, { 
             headers: { Authorization: `Bearer ${userToken}`}
         });
-        if(result.status === 200){       
-            // toast.success(result.data.msg); 
+        if(result.status === 200){         
             return true;
         }            
     } catch (error) {  
@@ -60,4 +58,17 @@ const acceptRequest = async (fromUserId, userToken) => {
         return false;
     }
 };
-export default { getSuggestions, sendRequest, getRequests, acceptRequest };
+
+const getFriends = async (userToken) => {
+    try {
+        const result = await axios.get(`${apiEndpoint}/connect/friends`, { 
+            headers: { Authorization: `Bearer ${userToken}`}
+        });
+        if(result.status === 200){        
+            return {status: true, friends: result.data.list};
+        }            
+    } catch (error) {   
+        return {status: false, msg: error.response.data.msg};
+    }
+};
+export default { getSuggestions, sendRequest, getRequests, acceptRequest, getFriends };

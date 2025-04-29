@@ -1,63 +1,79 @@
 import React, { useEffect, useState } from 'react';
 import { selectUser } from "../redux/authSlice";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateSidebarActiveTab } from '../redux/chatSlice';
 import connect from "../js/connect";
 import UserCard from "./UserCard";
-import { useDispatch } from 'react-redux';
-import { updateSidebarActiveTab } from '../redux/chatSlice';
 import Button from './Button';
 
 function AcceptFriends() {
-
   const dispatch = useDispatch();
   const [reqUsers, setReqUsers] = useState([]);
-  const [msg, setMsg]  = useState("");
+  const [msg, setMsg] = useState("");
   const user = useSelector(selectUser);
 
-  useEffect(()=>{
-    async function getRequests () {
+  useEffect(() => {
+    async function getRequests() {
       const result = await connect.getRequests(user.token);
-      if(result.status && result.requests.length>0){
-        setReqUsers(result.requests);
-      }else if(!result.status) {
+      if (result.status && result.requests.length > 0) {
+        setReqUsers(result.requests.map(u => ({ ...u, status: "accept" })));
+      } else if (!result.status) {
         setMsg(result.msg);
-      }        
+      }
     }
     getRequests();
     //eslint-disable-next-line
   }, []);
 
-  const acceptRequest = async (fromUserId) => {
-    console.log("clicked");
-    await connect.acceptRequest(fromUserId, user.token);
+  const acceptRequest = async (fromUserId) => { 
+    setReqUsers(prev => prev.map(user =>
+      user._id === fromUserId ? { ...user, status: "request-accepted" } : user
+    ));
+
+    await connect.acceptRequest(fromUserId, user.token); 
+  };
+
+  const handleFindFriendsClick = () => {
+    dispatch(updateSidebarActiveTab("add-friends"));
   };
 
   return (
     <div className="space-y-0">
       <div className='bg-slate-900'>
-        <input 
-          className="w-full bg-slate-700 px-4 py-2 text-white font-medium focus-visible:outline-none" 
-          type="text" 
+        <input
+          className="w-full bg-slate-700 px-4 py-2 text-white font-medium focus-visible:outline-none"
+          type="text"
           placeholder="Search..."
         />
       </div>
-      {msg!=="" && 
-      <>
-      <div className='px-4 py-2'>{msg}</div>
-        {reqUsers.length === 0 && 
-        <div className='text-center'>
-          <Button onClick={()=>dispatch(updateSidebarActiveTab("add-friends"))}>Find Friends</Button>
-        </div>
-        }        
-      </>
-      }
-        {reqUsers.length > 0 && reqUsers.map((user, idx) => (
-            <div key={idx} className="bg-slate-800 p-4 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer">
-              <UserCard name={user.username} type={"accept"} onActionClick={()=>acceptRequest(user._id)}/> 
+
+      {msg !== "" && (
+        <div className='px-4 py-2 text-white'>
+          {msg}
+          {reqUsers.length === 0 && (
+            <div className='text-center mt-4'>
+              <Button onClick={handleFindFriendsClick}>
+                Find Friends
+              </Button>
             </div>
-        ))}
+          )}
+        </div>
+      )}
+
+      {reqUsers.map((user, idx) => (
+        <div
+          key={idx}
+          className="bg-slate-800 p-4 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer"
+        >
+          <UserCard
+            name={user.username}
+            type={user.status}
+            onActionClick={() => acceptRequest(user._id)}
+          />
+        </div>
+      ))}
     </div>
-  )
+  );
 }
 
 export default AcceptFriends;

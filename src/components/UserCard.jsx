@@ -1,37 +1,75 @@
+import { FaComments } from "react-icons/fa";
 import Button from "./Button";
 
 function UserCard({ name, type = "default", onActionClick }) {
-
-  const getButtonLabel = () => {
+  const getStatusContent = () => {
     switch (type) {
       case "send":
-        return "Add Friend";
+        return (
+          <Button onClick={onActionClick}>
+            Add Friend
+          </Button>
+        );
+      case "request-sent":
+        return (
+          <div className="flex items-center gap-2 text-green-400 font-medium">
+            <svg
+              className="w-5 h-5 text-green-400"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 111.414-1.414L8.414 12.586l7.879-7.879a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+            Request Sent
+          </div>
+        );
       case "accept":
-        return "Confirm";
+        return (
+          <Button onClick={onActionClick}>
+            Accept
+          </Button>
+        );
+      case "request-accepted":
+        return (
+          <div className="flex items-center gap-2 text-green-400 font-medium">
+            <svg
+              className="w-5 h-5 text-green-400"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 111.414-1.414L8.414 12.586l7.879-7.879a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+            Request Accepted
+          </div>
+        );
       case "friends":
-        return "Friends";
+        return (
+          <div className="text-center font-medium"> 
+            <FaComments />
+          </div>
+        );
       default:
         return null;
     }
   };
-  const label = getButtonLabel();
+
   return (
-    <div className="flex items-center justify-between gap-3 px-2 py-0 rounded-lg hover:bg-slate-700 transition duration-200 cursor-pointer">
+    <div className="flex items-center justify-between gap-3 px-2 py-2 rounded-lg hover:bg-slate-700 transition duration-200 cursor-pointer">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#5856d6] text-white font-semibold text-lg">
           {name[0]}
         </div>
         <span className="text-white text-base font-medium">{name}</span>
       </div>
-
-      {label && (
-        <Button
-          onClick={onActionClick} 
-          disabled={type === "friends"}
-        >
-          {label}
-        </Button>
-      )}
+      {getStatusContent()}
     </div>
   );
 }

@@ -5,27 +5,29 @@ import connect from "../js/connect";
 import UserCard from "./UserCard";
 
 function AddFriends() {
-  
   const [sugg, setSugg] = useState([]);
   const user = useSelector(selectUser);
-  const [msg, setMsg]  = useState("");
+  const [msg, setMsg] = useState("");
 
-  useEffect(()=>{
-    async function getSuggestions () {
+  useEffect(() => {
+    async function getSuggestions() {
       const result = await connect.getSuggestions(user.token); 
-      if(result.status && result.requests.length>0){
-        setSugg(result.requests);
-      }else if(!result.status) {
+      if (result.status && result.suggestions.length > 0) {
+        setSugg(result.suggestions.map(s => ({ ...s, status: "send" })));
+      } else if (!result.status) {
         setMsg(result.msg);
-      }   
+      }
     }
     getSuggestions();
     //eslint-disable-next-line
   }, []);
 
-  const sendRequest = async (toUserId) => {
-    console.log("clicked");
-    await connect.sendRequest(toUserId, user.token);
+  const sendRequest = async (toUserId) => { 
+    setSugg(prev => prev.map(user =>
+      user._id === toUserId ? { ...user, status: "request-sent" } : user
+    ));
+
+    await connect.sendRequest(toUserId, user.token); 
   };
 
   return (
@@ -37,18 +39,22 @@ function AddFriends() {
           placeholder="Search for friends"
         />
       </div>
-      {msg!=="" && 
-        <>
-          <div className='px-4 py-2'>{msg}</div>       
-        </>
-        }
-        {sugg.map((user, idx) => (
-            <div key={idx} className="bg-slate-800 p-4 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer">
-                <UserCard name={user.username} type={"send"} onActionClick={()=>sendRequest(user._id)}/> 
-            </div>
-        ))}
+
+      {msg !== "" && (
+        <div className='px-4 py-2 text-white'>{msg}</div>
+      )}
+
+      {sugg.map((user, idx) => (
+        <div key={idx} className="bg-slate-800 p-4 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer">
+          <UserCard
+            name={user.username}
+            type={user.status}
+            onActionClick={() => sendRequest(user._id)}
+          />
+        </div>
+      ))}
     </div>
-  )
+  );
 }
 
-export default AddFriends
+export default AddFriends;
