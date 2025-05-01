@@ -33,6 +33,13 @@ function AcceptFriends() {
     await connect.acceptRequest(fromUserId, user.token); 
   };
 
+  const declineRequest = async (fromUserId) => {
+    setReqUsers(prev => prev.map(user =>
+      user._id === fromUserId ? { ...user, status: "request-declined" } : user
+    ));
+    await connect.declineRequest(fromUserId, user.token); 
+  };
+
   const handleFindFriendsClick = () => {
     dispatch(updateSidebarActiveTab("add-friends"));
   };
@@ -69,6 +76,7 @@ function AcceptFriends() {
             name={user.username}
             type={user.status}
             onActionClick={() => acceptRequest(user._id)}
+            onDeclineClick={() => declineRequest(user._id)}
           />
         </div>
       ))}

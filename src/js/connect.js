@@ -59,6 +59,20 @@ const acceptRequest = async (fromUserId, userToken) => {
     }
 };
 
+const declineRequest = async (fromUserId, userToken) => {
+    try {
+        const result = await axios.post(`${apiEndpoint}/connect/decline/${fromUserId}`,{}, { 
+            headers: { Authorization: `Bearer ${userToken}`}
+        });
+        if(result.status === 200){         
+            return true;
+        }            
+    } catch (error) {  
+        toast.error(error.response.data.msg);
+        return false;
+    }
+};
+
 const getFriends = async (userToken) => {
     try {
         const result = await axios.get(`${apiEndpoint}/connect/friends`, { 
@@ -71,4 +85,4 @@ const getFriends = async (userToken) => {
         return {status: false, msg: error.response.data.msg};
     }
 };
-export default { getSuggestions, sendRequest, getRequests, acceptRequest, getFriends };
+export default { getSuggestions, sendRequest, getRequests, acceptRequest, getFriends, declineRequest };

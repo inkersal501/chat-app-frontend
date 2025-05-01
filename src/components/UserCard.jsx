@@ -1,8 +1,8 @@
-import { FaComments } from "react-icons/fa";
+import { FaComments  } from "react-icons/fa"; 
 import Button from "./Button";
 import IconButton from "./IconButton";
 
-function UserCard({ name, type = "default", onActionClick }) {
+function UserCard({ name, type = "default", onActionClick, onDeclineClick }) {
   const getStatusContent = () => {
     switch (type) {
       case "send":
@@ -13,44 +13,29 @@ function UserCard({ name, type = "default", onActionClick }) {
         );
       case "request-sent":
         return (
-          <div className="flex items-center gap-2 text-green-400 font-medium text-xs">
-            <svg
-              className="w-5 h-5 text-green-400"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 111.414-1.414L8.414 12.586l7.879-7.879a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
+          <div className="text-green-400 font-medium text-xs"> 
             Request Sent
           </div>
         );
       case "accept":
-        return (
-          <Button onClick={onActionClick}>
-            Accept
-          </Button>
+        return ( 
+          <div className="flex gap-2">
+            <Button onClick={onActionClick}>Accept</Button>
+            <Button variant="danger" onClick={onDeclineClick}>Decline</Button>
+          </div>
         );
       case "request-accepted":
         return (
-          <div className="flex items-center gap-2 text-green-400 font-medium text-xs">
-            <svg
-              className="w-5 h-5 text-green-400"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 111.414-1.414L8.414 12.586l7.879-7.879a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
+          <div className="text-green-400 font-medium text-xs"> 
             Request Accepted
           </div>
         );
+      case "request-declined":
+        return (
+          <div className="text-red-400 font-medium text-xs"> 
+            Request Declined
+          </div>
+        ); 
       case "friends":
         return (
           <div className="text-center"> 
