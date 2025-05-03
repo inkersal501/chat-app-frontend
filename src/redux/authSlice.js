@@ -14,7 +14,9 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.user = null;
+      state.chatWindow = null;
       localStorage.removeItem("user");
+      localStorage.removeItem("chatWindow");
     }, 
   },
 });
