@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import chat from "../js/chat";
+import message from "../js/message";
 import { selectUser } from "../redux/authSlice";
 import { useSelector } from "react-redux"; 
 
@@ -12,7 +12,7 @@ function LoadChat({chatId}) {
     useEffect(() => {
         async function fetchMessages() {
           if (!chatId) return;    
-            const res = await chat.getMessages(chatId, user.token); 
+            const res = await message.getMessages(chatId, user.token); 
             if (res.status) {
                 setMessages(res.messages);
             }
@@ -22,13 +22,14 @@ function LoadChat({chatId}) {
         //eslint-disable-next-line
     }, [chatId]);
 
+
     
     if (loading) return <div className="text-white p-4">Loading chat...</div>;
 
     return (
         <div>
             {messages.length == 0 && <div className='px-4 py-2'>Start Chat...</div>}
-            {messages.length >0 &&  
+            {messages.length > 0 &&  
                 <div className="p-4 text-white space-y-2">
                     {messages.map((msg, idx) => (
 

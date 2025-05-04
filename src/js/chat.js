@@ -17,17 +17,6 @@ const getChatList = async (userToken) => {
     }
 };
 
-const getMessages = async (chatId, userToken) => {
-    try {
-        const result = await axios.get(`${apiEndpoint}/chat/${chatId}/messages`, { 
-            headers: { Authorization: `Bearer ${userToken}`}
-        });
-        if(result.status === 200){      
-            return {status: true, messages: result.data.list};
-        }            
-    } catch (error) {  
-        return {status: false, msg: error.response.data.msg};
-    }
-};
 
-export default { getChatList, getMessages };
+
+export default { getChatList };
