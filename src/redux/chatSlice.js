@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState =  JSON.parse(localStorage.getItem("chatWindow")) || { activeTab : "chats", activeChat: {}, refreshChat: true };
+const initialState =  JSON.parse(localStorage.getItem("chatWindow")) || { activeTab : "chats", activeChat: {}, refreshChatlist: false };
 
 const chatSlice = createSlice({
     name: "chatWindow",
@@ -14,16 +14,16 @@ const chatSlice = createSlice({
             state.activeChat = { ...action.payload};
             localStorage.setItem("chatWindow", JSON.stringify(state));
         },
-        updateRefreshChat: (state, action) => {
-            state.refreshChat = action.payload;
+        updateRefreshChatlist: (state, action) => {
+            state.refreshChatlist = action.payload;
             localStorage.setItem("chatWindow", JSON.stringify(state));
-        },
+        },        
     }
 });
 
 export const sidebarActiveTab = (state) => state.chatWindow.activeTab;
 export const activeChat = (state) => state.chatWindow.activeChat;
-export const refreshChat = (state) => state.chatWindow.refreshChat;
+export const refreshChatlist = (state) => state.chatWindow.refreshChatlist;
 
-export const { updateSidebarActiveTab, updateActiveChat, updateRefreshChat } = chatSlice.actions;
+export const { updateSidebarActiveTab, updateActiveChat, updateRefreshChatlist } = chatSlice.actions;
 export default chatSlice.reducer;

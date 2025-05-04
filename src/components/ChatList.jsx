@@ -3,7 +3,7 @@ import { selectUser } from "../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux"; 
 import UserCard from "./UserCard";
 import chat from "../js/chat";
-import {activeChat , refreshChat, updateActiveChat, updateRefreshChat} from "../redux/chatSlice";
+import {activeChat , refreshChatlist, updateActiveChat, updateRefreshChatlist} from "../redux/chatSlice";
  
 const ChatList = () => {
 
@@ -11,7 +11,7 @@ const ChatList = () => {
     const [chatList, setChatList] = useState([]);
     const user = useSelector(selectUser);
     const currentActiveChat = useSelector(activeChat);
-    const isrefreshChat = useSelector(refreshChat);
+    const isrefreshChatlist = useSelector(refreshChatlist);
     const [msg, setMsg]  = useState("");
  
 
@@ -28,7 +28,7 @@ const ChatList = () => {
                 dispatch(updateActiveChat({ id: firstChat._id, username: firstName }));
               }
         
-              dispatch(updateRefreshChat(false));
+              dispatch(updateRefreshChatlist(false));
             } else if (!result.status) {
               setMsg(result.msg);
             }
@@ -38,11 +38,11 @@ const ChatList = () => {
           getChatList();
         
           // Load again if refreshChat becomes true
-          if (isrefreshChat) {
+          if (isrefreshChatlist) {
             getChatList();
           }  
         // eslint-disable-next-line
-    }, [isrefreshChat]);
+    }, [isrefreshChatlist]);
     
     return (
         <div className="space-y-0">
@@ -64,7 +64,7 @@ const ChatList = () => {
                 return (
                     <div
                         key={idx}
-                        className={`${currentActiveChat.id===chat._id? `bg-slate-500`:`bg-slate-800 hover:bg-slate-700`} border-b border-slate-700 px-4 py-2 transition cursor-pointer`}
+                        className={`${currentActiveChat.id===chat._id? `glass-bg`:`bg-slate-800 hover:bg-slate-700`} border-t border-slate-700 px-4 py-2 transition cursor-pointer`}
                         onClick={() => dispatch(updateActiveChat({ id: chat._id, username: displayName }))}
                     >
                         <UserCard name={displayName} />

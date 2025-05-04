@@ -56,7 +56,8 @@ function UserCard({ name, type = "default", onActionClick, onDeclineClick }) {
   return (
     <div className={`flex items-center justify-between gap-3 px-2 py-2 ${type==='friends'?'hover:bg-slate-800':''} transition duration-200 cursor-pointer`}>
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#5856d6] text-white font-semibold text-lg">
+        <div className="w-10 h-10 flex items-center justify-center rounded-full text-gray-900
+        bg-gradient-to-r from-gray-200 via-slate-100 to-gray-300 font-semibold text-lg uppercase">
           {name[0]}
         </div>
         <span className="text-white text-base font-medium">{name}</span>
