@@ -24,7 +24,7 @@ function ChatWindow() {
       </div>
 
       {/*Message Input*/}
-      <div className="h-16 bg-slate-900 flex items-center px-4 border-t border-slate-700">
+      <div className="h-16 bg-slate-900 flex items-center px-4 border-t border-slate-700 overflow-hidden">
         <MessageInput />
       </div>
     </div>

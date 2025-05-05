@@ -35,13 +35,13 @@ function MessageInput() {
     <div className="flex w-full items-center justify-between">
       <textarea
         value={message}
+        rows="1"
         onChange={(e) => setMessage(e.target.value)}
-        // onKeyDown={handleKeyDown}
-        className="w-full h-full bg-slate-800 px-4 py-2 text-white font-medium border border-slate-800 rounded-lg focus-visible:outline-none"
-        type="text"
-        placeholder="Type a message"></textarea>
+        className="w-full h-full bg-slate-800 px-4 py-2 text-white font-medium border border-slate-800 rounded-lg focus-visible:outline-none resize-none custom-scrollbar"
+        placeholder="Type a message"
+      />
       <div className="ms-4">
-        <IconButton icon={<IoSend />} tooltip={"Send"} position="top" active={false} onClick={handleSend} />
+        <IconButton icon={<IoSend />} tooltip={""} position="" active={false} onClick={handleSend} />
       </div>
     </div>
   );

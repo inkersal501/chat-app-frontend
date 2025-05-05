@@ -34,14 +34,14 @@ function LoadChat({ chatId }) {
                     const isSender = msg.sender._id === user._id;
                     return (
                  
-                        <div className="flex items-center gap-3" key={idx}>
+                        <div className={`flex items-center gap-3 ${isSender ? 'flex-row-reverse':''}`} key={idx}>
                             <div className="w-10 h-10 flex items-center justify-center rounded-full text-gray-900
                             bg-gradient-to-r from-gray-200 via-slate-100 to-gray-300 font-semibold text-lg uppercase">
                             {msg.sender.username[0]}
                             </div>
-                            <div className={`w-[100%] p-2 rounded-xl max-w-[90%] ${isSender ? 'glass-bg text-white self-end' : 'bg-gray-800 border border-gray-700 text-white self-start'}`}>
+                            <div className={`p-2 px-4 rounded-xl max-w-[90%] ${isSender ? 'bg-gray-800 border border-gray-700' : 'glass-bg'} text-white self-start`}>
                                 <p><strong>{msg.sender.username}</strong></p>
-                                <p>{msg.content}</p>
+                                <p className='whitespace-pre'>{msg.content}</p>
                             </div>
                         </div>                         
                     )
