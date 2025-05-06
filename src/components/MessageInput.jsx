@@ -5,6 +5,7 @@ import { selectUser } from "../redux/authSlice";
 import { activeChat, updateRefreshChatlist } from '../redux/chatSlice';
 import { useDispatch, useSelector } from "react-redux";
 import messageJs from "../js/message";
+import socket from "../js/server";
 
 function MessageInput() {
 
@@ -15,6 +16,13 @@ function MessageInput() {
   
   const handleSend = async () => {
     if (message.trim() === "") return;
+    const messageData =  {
+      sender:{username: user.username, _id: user._id },
+      content: message,
+      roomId: id
+    }; 
+    socket.emit("send_message", {roomId: id, message: messageData});
+
     await messageJs.sendMessage(id, user.token, message); 
     dispatch(updateRefreshChatlist(true));
     setMessage("");

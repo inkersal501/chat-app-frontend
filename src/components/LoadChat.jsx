@@ -1,28 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import message from "../js/message";
 import { selectUser } from "../redux/authSlice";
 import { useSelector } from "react-redux"; 
+import socket from '../js/server';
 
 function LoadChat({ chatId }) {
  
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
+    const messagesEndRef = useRef(null);
     const user = useSelector(selectUser);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
 
     useEffect(() => {
         async function fetchMessages() {
             if (!chatId) return;
             setLoading(true);
             const res = await message.getMessages(chatId, user.token);
-            if (res.status) {
+            if (res.status)
                 setMessages(res.messages);
-            }
             setLoading(false);
         }
         fetchMessages(); 
+        socket.on("receive_message", (newMessage) => {
+            if(newMessage.roomId === chatId) {
+                setMessages((prev)=>[...prev, newMessage]);
+            }
+        }); 
+        return ()=> {
+            socket.off("receive_message");
+        }
         // eslint-disable-next-line
     }, [chatId]);
- 
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
     if (loading) return <div className="text-white p-4">Loading chat...</div>;
 
     return (
@@ -46,6 +63,7 @@ function LoadChat({ chatId }) {
                         </div>                         
                     )
                     })}
+                    <div ref={messagesEndRef} />
                 </div>
             }
         </div>

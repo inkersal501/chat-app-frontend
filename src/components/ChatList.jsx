@@ -26,6 +26,7 @@ const ChatList = () => {
                 const firstParticipant = firstChat.participants.find(p => p._id !== user._id);
                 const firstName = firstParticipant ? firstParticipant.username : "My Chat";
                 dispatch(updateActiveChat({ id: firstChat._id, username: firstName }));
+                // console.log("test here")
               }
         
               dispatch(updateRefreshChatlist(false));

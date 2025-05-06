@@ -1,5 +1,5 @@
 import axios from "axios";
-import apiEndpoint from "./config";
+import {apiEndpoint} from "./config";
 import { toast } from "react-toastify";
 
   

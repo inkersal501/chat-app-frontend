@@ -17,7 +17,8 @@ const chatSlice = createSlice({
         updateRefreshChatlist: (state, action) => {
             state.refreshChatlist = action.payload;
             localStorage.setItem("chatWindow", JSON.stringify(state));
-        },        
+        }, 
+
     }
 });
 
