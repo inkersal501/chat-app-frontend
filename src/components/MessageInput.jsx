@@ -18,7 +18,7 @@ function MessageInput() {
     if (message.trim() === "") return;
     const messageData =  {
       sender:{username: user.username, _id: user._id },
-      content: message,
+      content: message.trim(),
       roomId: id
     }; 
     socket.emit("send_message", {roomId: id, message: messageData});

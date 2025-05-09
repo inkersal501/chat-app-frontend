@@ -15,7 +15,7 @@ function ChatWindow() {
   }, [id]);
 
   return (
-    <div className="w-4/6 h-full flex flex-col bg-slate-800">
+    <div className="w-full md:w-4/6 h-1/2 md:h-full flex flex-col bg-slate-800">
       
       {/*Chat Header*/}
       <div className="h-16 flex items-center px-4 border-b border-slate-700 bg-slate-800 z-10">

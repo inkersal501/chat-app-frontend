@@ -7,9 +7,11 @@ import UserCard from "./UserCard";
 import Button from './Button';
 
 function AcceptFriends() {
+  
   const dispatch = useDispatch();
   const [reqUsers, setReqUsers] = useState([]);
-  const [msg, setMsg] = useState("");
+  const [filteredRequests, setFilteredRequests] = useState([]);
+  const [search, setSearch] = useState(""); 
   const user = useSelector(selectUser);
 
   useEffect(() => {
@@ -17,13 +19,30 @@ function AcceptFriends() {
       const result = await connect.getRequests(user.token);
       if (result.status && result.requests.length > 0) {
         setReqUsers(result.requests.map(u => ({ ...u, status: "accept" })));
-      } else if (!result.status) {
-        setMsg(result.msg);
-      }
+      } 
     }
     getRequests();
     //eslint-disable-next-line
   }, []);
+
+  useEffect(()=> {
+    setFilteredRequests(reqUsers);
+  }, [reqUsers]);
+
+  const filterRequests = (search) => {
+    const filtered = reqUsers.filter((f) =>
+        f.username.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredRequests(filtered);
+  };
+
+  useEffect(()=> {
+    if(search === "")
+      setFilteredRequests(reqUsers);
+    else
+      filterRequests(search);
+    //eslint-disable-next-line
+  }, [search]);
 
   const acceptRequest = async (fromUserId) => { 
     setReqUsers(prev => prev.map(user =>
@@ -51,23 +70,15 @@ function AcceptFriends() {
           className="w-full bg-slate-700 px-4 py-2 text-white font-medium focus-visible:outline-none"
           type="text"
           placeholder="Search..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
+ 
+        
+     
 
-      {msg !== "" && (
-        <div className='px-4 py-2 text-white'>
-          {msg}
-          {reqUsers.length === 0 && (
-            <div className='text-center mt-4'>
-              <Button onClick={handleFindFriendsClick}>
-                Find Friends
-              </Button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {reqUsers.map((user, idx) => (
+      {filteredRequests.length > 0 ? filteredRequests.map((user, idx) => (
         <div
           key={idx}
           className="bg-slate-800 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer"
@@ -79,7 +90,20 @@ function AcceptFriends() {
             onDeclineClick={() => declineRequest(user._id)}
           />
         </div>
-      ))}
+      )):(
+        <>
+          <div className="p-4 text-gray-400">No Requests found.</div>   
+          <div className='px-4 py-2 text-white'>               
+            {reqUsers.length === 0 && (
+              <div className='text-center mt-4'>
+                <Button onClick={handleFindFriendsClick}>
+                  Find Friends
+                </Button>
+              </div>            
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -10,7 +10,7 @@ import IconButton from './IconButton';
 import AddFriends from './AddFriends';
 import AcceptFriends from './AcceptFriends';
 import { sidebarActiveTab, updateSidebarActiveTab } from '../redux/chatSlice';
- 
+
 const sidebarTabs = [
   {
     key: "chats",
@@ -45,46 +45,56 @@ const sidebarTabs = [
 ];
 
 function Sidebar() {
- 
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const activeTab = useSelector(sidebarActiveTab);
-
-  const getActiveLabel = (key)=>{
-    const filter = sidebarTabs.filter((item)=>item.key===key)[0]; 
-    return filter.label;
+  const activeTab = useSelector(sidebarActiveTab); 
+ 
+  const getActiveLabel = () => {
+    const activeTabData = sidebarTabs.find((tab) => tab.key === activeTab);
+    return activeTabData ? activeTabData.label : "";
+  };
+ 
+  const handleTabChange = (key) => {
+    dispatch(updateSidebarActiveTab(key));
+  };
+ 
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
   };
 
   return (
-    <div className="w-2/6 h-full flex overflow-hidden">
-      {/* Icon panel */}
-      <div className="w-20 bg-slate-900 text-white flex flex-col items-center py-4 space-y-6 shadow-lg">
-        {sidebarTabs.map((tab) => (
-          <IconButton
-            key={tab.key}
-            icon={tab.icon}
-            tooltip={tab.label}
-            active={activeTab === tab.key}
-            onClick={() => dispatch(updateSidebarActiveTab(tab.key))}
-            position="right"
-          />
-        ))}
-        <div className="mt-auto">
+    <div className="w-full md:w-2/6 h-1/2 md:h-full flex flex-col md:flex-row overflow-hidden">
+      {/* Sidebar Icon Panel */}
+      <div className="h-16 md:h-full w-full md:w-20 bg-slate-900 text-white flex space-x-2 md:flex-col items-center justify-between px-4 md:px-0 md:py-4 md:space-y-2 shadow-lg">
+        <div className="flex space-x-2 md:flex-col items-center md:space-y-6">
+          {sidebarTabs.map((tab) => (
+            <IconButton
+              key={tab.key}
+              icon={tab.icon}
+              tooltip={tab.label}
+              active={activeTab === tab.key}
+              onClick={() => handleTabChange(tab.key)}
+              position="right"
+            />
+          ))}
+        </div>
+
+        {/* Logout Button */}
+        <div className="mx-auto md:mt-auto">
           <IconButton
             icon={<FaSignOutAlt />}
-            tooltip={"Logout"}
-            onClick={() => {
-              dispatch(logout());
-              navigate("/");
-            }}
+            tooltip="Logout"
+            onClick={handleLogout}
             position="right"
           />
         </div>
       </div>
 
-      {/* Content area */}
-      <div className="flex-1 bg-slate-800 text-white overflow-y-auto border-e border-slate-600">
-        <h2 className="text-xl font-bold capitalize p-4 border-b border-slate-700">{getActiveLabel(activeTab)}</h2>
+      {/* Content */}
+      <div className="flex-1 bg-slate-800 text-white overflow-y-auto border-t md:border-t-0 md:border-e border-slate-600">
+        <h2 className="text-xl font-bold capitalize p-4 border-b border-slate-700">{getActiveLabel()}</h2>
         {sidebarTabs.map((tab) =>
           activeTab === tab.key ? <div key={tab.key}>{tab.component}</div> : null
         )}
