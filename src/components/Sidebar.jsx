@@ -9,7 +9,8 @@ import SettingsPanel from './SettingsPanel';
 import IconButton from './IconButton';
 import AddFriends from './AddFriends';
 import AcceptFriends from './AcceptFriends';
-import { sidebarActiveTab, updateSidebarActiveTab } from '../redux/chatSlice';
+import { sidebarActiveTab, updateSidebarActiveTab, activeChat,updateActiveChat } from '../redux/chatSlice';
+import useIsMobile from '../hooks/useIsMobile';
 
 const sidebarTabs = [
   {
@@ -44,18 +45,24 @@ const sidebarTabs = [
   },
 ];
 
+
 function Sidebar() {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const activeTab = useSelector(sidebarActiveTab); 
- 
+  const chat = useSelector(activeChat);
+  const isMobile = useIsMobile();
+
   const getActiveLabel = () => {
     const activeTabData = sidebarTabs.find((tab) => tab.key === activeTab);
     return activeTabData ? activeTabData.label : "";
   };
  
   const handleTabChange = (key) => {
+    if(isMobile && chat.id !== null){
+      dispatch(updateActiveChat({ id: null, username: null }));
+    }
     dispatch(updateSidebarActiveTab(key));
   };
  
@@ -63,11 +70,27 @@ function Sidebar() {
     dispatch(logout());
     navigate("/");
   };
+    
+  const sidebarContent = ()=>{
+    return (
+      <div className={`bg-slate-800`}>
+        <div className="flex-1 bg-slate-800 text-white overflow-y-auto border-t md:border-t-0 md:border-e border-slate-600">
+          <h2 className="text-xl font-bold capitalize p-4 border-b border-slate-700">
+            {getActiveLabel()}
+          </h2>
+          {sidebarTabs.map((tab) =>
+            activeTab === tab.key ? <div key={tab.key}>{tab.component}</div> : null
+          )}
+        </div>
+      </div>
+    )
+  };
 
   return (
-    <div className="w-full md:w-2/6 h-1/2 md:h-full flex flex-col md:flex-row overflow-hidden">
+    <div className={`w-full md:w-2/6 ${(isMobile && chat.id !== null)?'h-1/9':'h-1/2'} bg-slate-800 md:h-full flex flex-col md:flex-row overflow-hidden`}>
+      
       {/* Sidebar Icon Panel */}
-      <div className="h-16 md:h-full w-full md:w-20 bg-slate-900 text-white flex space-x-2 md:flex-col items-center justify-between px-4 md:px-0 md:py-4 md:space-y-2 shadow-lg">
+      <div className={`h-16 md:h-full w-full md:w-20 bg-slate-900 text-white flex space-x-2 md:flex-col items-center justify-between px-4 md:px-0 md:py-4 md:space-y-2 shadow-lg z-10`}>
         <div className="flex space-x-2 md:flex-col items-center md:space-y-6">
           {sidebarTabs.map((tab) => (
             <IconButton
@@ -80,8 +103,6 @@ function Sidebar() {
             />
           ))}
         </div>
-
-        {/* Logout Button */}
         <div className="mx-auto md:mt-auto">
           <IconButton
             icon={<FaSignOutAlt />}
@@ -92,13 +113,9 @@ function Sidebar() {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 bg-slate-800 text-white overflow-y-auto border-t md:border-t-0 md:border-e border-slate-600">
-        <h2 className="text-xl font-bold capitalize p-4 border-b border-slate-700">{getActiveLabel()}</h2>
-        {sidebarTabs.map((tab) =>
-          activeTab === tab.key ? <div key={tab.key}>{tab.component}</div> : null
-        )}
-      </div>
+      {/* Sidebar Content */}
+      {(!isMobile || (isMobile && chat.id === null)) && sidebarContent()}
+     
     </div>
   );
 }

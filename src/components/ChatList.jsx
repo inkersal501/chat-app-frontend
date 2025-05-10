@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import UserCard from "./UserCard";
 import chat from "../js/chat";
 import {activeChat , refreshChatlist, updateActiveChat, updateRefreshChatlist} from "../redux/chatSlice";
- 
+import useIsMobile from '../hooks/useIsMobile';
+
 const ChatList = () => {
 
     const dispatch = useDispatch();
@@ -14,20 +15,22 @@ const ChatList = () => {
     const user = useSelector(selectUser);
     const currentActiveChat = useSelector(activeChat);
     const isrefreshChatlist = useSelector(refreshChatlist);   
+    const isMobile = useIsMobile();
 
     useEffect(() => {
         async function getChatList() {
           const result = await chat.getChatList(user.token);
           if (result.status && result.chatlist.length > 0) {
             setChatList(result.chatlist);
-    
-            if (!currentActiveChat?.id) {
-              const firstChat = result.chatlist[0];
-              const firstParticipant = firstChat.participants.find(p => p._id !== user._id);
-              const firstName = firstParticipant ? firstParticipant.username : "My Chat";
-              dispatch(updateActiveChat({ id: firstChat._id, username: firstName }));
+            if(!isMobile){
+                if (!currentActiveChat?.id) {
+                    const firstChat = result.chatlist[0];
+                    const firstParticipant = firstChat.participants.find(p => p._id !== user._id);
+                    const firstName = firstParticipant ? firstParticipant.username : "My Chat";
+                    dispatch(updateActiveChat({ id: firstChat._id, username: firstName }));
+                }
             }
-    
+            
             dispatch(updateRefreshChatlist(false));
           }  
         }
@@ -37,13 +40,18 @@ const ChatList = () => {
         if (isrefreshChatlist) {
           getChatList();
         }
-      }, [isrefreshChatlist, user, currentActiveChat?.id, dispatch]);
+        //eslint-disable-next-line
+      }, [isrefreshChatlist, user, currentActiveChat?.id, isMobile]);
      
     const filteredChatList = chatList.filter(chat => {
         const other = chat.participants.find(p => p._id !== user._id);
         const displayName = other ? other.username : "My Chat";
         return displayName.toLowerCase().includes(search.toLowerCase());
     });
+
+    const handleOpenChat = (id, username) => {          
+        dispatch(updateActiveChat({ id, username}))
+    }
     
     
     return (
@@ -66,7 +74,7 @@ const ChatList = () => {
                     return (
                         <div key={idx} 
                             className={`${currentActiveChat.id === chat._id?`glass-bg`:`bg-slate-800 hover:bg-slate-700`} border-t border-slate-700 px-4 py-2 transition cursor-pointer`}
-                            onClick={() => dispatch(updateActiveChat({ id: chat._id, username: displayName }))}
+                            onClick={() => handleOpenChat(chat._id, displayName)}
                         >
                             <UserCard name={displayName} />
                         </div>

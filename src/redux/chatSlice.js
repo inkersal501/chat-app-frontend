@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState =  JSON.parse(localStorage.getItem("chatWindow")) || { activeTab : "chats", activeChat: {}, refreshChatlist: false };
+const initialState =  JSON.parse(localStorage.getItem("chatWindow")) || { activeTab : "chats", activeChat: {id: null, username: null}, refreshChatlist: false };
 
 const chatSlice = createSlice({
     name: "chatWindow",
