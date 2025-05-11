@@ -2,7 +2,7 @@ import { FaComments  } from "react-icons/fa";
 import Button from "./Button";
 import IconButton from "./IconButton";
 
-function UserCard({ name, type = "default", onActionClick, onDeclineClick }) {
+function UserCard({ name, type = "default", onActionClick, onDeclineClick, openChat }) {
   const getStatusContent = () => {
     switch (type) {
       case "send":
@@ -41,11 +41,11 @@ function UserCard({ name, type = "default", onActionClick, onDeclineClick }) {
           <div className="text-center"> 
             <IconButton 
               icon={<FaComments />}
-              tooltip={""}
+              tooltip={"Click to chat"}
+              position="left"
               active={""}
-              onClick={()=>{}}
-            />
-            
+              onClick={openChat}
+            />            
           </div>
         );
       default:

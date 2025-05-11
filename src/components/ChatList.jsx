@@ -52,8 +52,7 @@ const ChatList = () => {
     const handleOpenChat = (id, username) => {          
         dispatch(updateActiveChat({ id, username}))
     }
-    
-    
+   
     return (
         <div className="space-y-0">
             <div className='bg-slate-900'>

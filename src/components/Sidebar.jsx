@@ -73,7 +73,7 @@ function Sidebar() {
     
   const sidebarContent = ()=>{
     return (
-      <div className={`bg-slate-800`}>
+      // <div className={`bg-slate-800`}>
         <div className="flex-1 bg-slate-800 text-white overflow-y-auto border-t md:border-t-0 md:border-e border-slate-600">
           <h2 className="text-xl font-bold capitalize p-4 border-b border-slate-700">
             {getActiveLabel()}
@@ -82,7 +82,7 @@ function Sidebar() {
             activeTab === tab.key ? <div key={tab.key}>{tab.component}</div> : null
           )}
         </div>
-      </div>
+      // </div>
     )
   };
 
@@ -91,7 +91,7 @@ function Sidebar() {
       
       {/* Sidebar Icon Panel */}
       <div className={`h-16 md:h-full w-full md:w-20 bg-slate-900 text-white flex space-x-2 md:flex-col items-center justify-between px-4 md:px-0 md:py-4 md:space-y-2 shadow-lg z-10`}>
-        <div className="flex space-x-2 md:flex-col items-center md:space-y-6">
+        <div className="flex space-x-2 md:flex-col items-center md:space-y-6 mx-0">
           {sidebarTabs.map((tab) => (
             <IconButton
               key={tab.key}
@@ -103,7 +103,7 @@ function Sidebar() {
             />
           ))}
         </div>
-        <div className="mx-auto md:mt-auto">
+        <div className="mx-0 md:mt-auto">
           <IconButton
             icon={<FaSignOutAlt />}
             tooltip="Logout"
