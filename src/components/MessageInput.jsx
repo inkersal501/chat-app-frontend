@@ -45,6 +45,12 @@ function MessageInput() {
         value={message}
         rows="1"
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault(); 
+            handleSend();
+          }
+        }}
         className="w-full h-full bg-slate-800 px-4 py-2 text-white font-medium border border-slate-800 rounded-lg focus-visible:outline-none resize-none custom-scrollbar"
         placeholder="Type a message"
       />

@@ -42,8 +42,7 @@ const FriendList = () => {
     //eslint-disable-next-line
     }, [search]);
     
-    const handleOpenChat = (id, username) => { 
-        //replace userid with chatid         
+    const handleOpenChat = (id, username) => {   
         dispatch(updateActiveChat({ id, username}))
     }
 
@@ -61,7 +60,7 @@ const FriendList = () => {
 
             {filteredFriends.length > 0 ? filteredFriends.map((user, idx) => (
                 <div key={idx} className="bg-slate-800 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer">
-                    <UserCard name={user.username} type="friends" openChat={()=>handleOpenChat(user._id, user.username)}/>
+                    <UserCard name={user.username} type="friends" openChat={()=>handleOpenChat(user.chatId, user.username)}/>
                 </div> 
             )) : (
             <div className="p-4 text-gray-400">No friends found.</div>
