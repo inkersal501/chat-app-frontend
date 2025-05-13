@@ -12,10 +12,12 @@ import AcceptFriends from './AcceptFriends';
 import { sidebarActiveTab, updateSidebarActiveTab, activeChat,updateActiveChat } from '../redux/chatSlice';
 import useIsMobile from '../hooks/useIsMobile';
 
+
+
 const sidebarTabs = [
   {
-    key: "chats",
-    label: "Chats",
+    key: "chat",
+    label: "Chat",
     icon: <FaComments />,
     component: <ChatList />,
   },
@@ -91,7 +93,7 @@ function Sidebar() {
       
       {/* Sidebar Icon Panel */}
       <div className={`h-16 md:h-full w-full md:w-20 bg-slate-900 text-white flex space-x-2 md:flex-col items-center justify-between px-4 md:px-0 md:py-4 md:space-y-2 shadow-lg z-10`}>
-        <div className="flex space-x-2 md:flex-col items-center md:space-y-6 mx-0">
+        <div className="flex space-y-0 md:flex-col items-center md:space-y-4 me-0">
           {sidebarTabs.map((tab) => (
             <IconButton
               key={tab.key}

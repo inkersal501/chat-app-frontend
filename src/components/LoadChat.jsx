@@ -10,11 +10,7 @@ function LoadChat({ chatId }) {
     const [loading, setLoading] = useState(true);
     const messagesEndRef = useRef(null);
     const user = useSelector(selectUser);
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
-
+ 
     useEffect(() => {
         async function fetchMessages() {
             if (!chatId) return;
@@ -22,7 +18,9 @@ function LoadChat({ chatId }) {
             const res = await message.getMessages(chatId, user.token);
             if (res.status)
                 setMessages(res.messages);
-            setLoading(false);
+            setTimeout(()=> {
+                setLoading(false);
+            }, 200);            
         }
         fetchMessages(); 
         socket.on("receive_message", (newMessage) => {
@@ -35,12 +33,16 @@ function LoadChat({ chatId }) {
         }
         // eslint-disable-next-line
     }, [chatId]);
-
-    useEffect(() => {
-        scrollToBottom();
+ 
+    useEffect(() => { 
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "auto" });
+        }
     }, [messages]);
 
-    if (loading) return <div className="text-white p-4">Loading chat...</div>;
+    if (loading) return (<div className="p-4 flex items-center justify-center h-full">
+        <div className="w-8 h-8 border-4 border-white-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>);
 
     return (
         <div>
