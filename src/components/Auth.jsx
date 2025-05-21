@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'; 
+import { useEffect, useState } from 'react'; 
 import auth from "../js/auth";
 import { ClipLoader } from 'react-spinners';
-import { useDispatch } from "react-redux";
-import { login } from "../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { login, selectIsLogin, updateIsLogin } from "../redux/authSlice";
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
- 
+
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true); 
+
+  const isLogin = useSelector(selectIsLogin);
   const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -29,7 +30,7 @@ const Auth = () => {
       } else {
         const signUp = await auth.signUp(data);
         if (signUp) {
-          setIsLogin(true);
+          dispatch(updateIsLogin(true));
         }
       }
     } catch (err) {
@@ -135,7 +136,7 @@ const Auth = () => {
               <>
                 Don’t have an account?{' '}
                 <button
-                  onClick={() => setIsLogin(false)}
+                  onClick={() => dispatch(updateIsLogin(false))}
                   className="text-[#1A2980] hover:underline font-medium cursor-pointer underline"
                 >
                   Sign Up
@@ -145,7 +146,7 @@ const Auth = () => {
               <>
                 Already have an account?{' '}
                 <button
-                  onClick={() => setIsLogin(true)}
+                  onClick={() => dispatch(updateIsLogin(true))}
                   className="text-[#1A2980] hover:underline font-medium cursor-pointer underline"
                 >
                   Sign In

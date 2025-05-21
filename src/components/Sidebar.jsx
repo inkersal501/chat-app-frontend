@@ -9,11 +9,12 @@ import SettingsPanel from './SettingsPanel';
 import IconButton from './IconButton';
 import AddFriends from './AddFriends';
 import AcceptFriends from './AcceptFriends';
+import Invite from './Invite';
 import { sidebarActiveTab, updateSidebarActiveTab, activeChat,updateActiveChat } from '../redux/chatSlice';
 import useIsMobile from '../hooks/useIsMobile';
+import { FcInvite } from "react-icons/fc";
 
-
-
+import { CgMathPlus } from "react-icons/cg";
 const sidebarTabs = [
   {
     key: "chat",
@@ -44,6 +45,12 @@ const sidebarTabs = [
     label: "Settings",
     icon: <FaCog />,
     component: <SettingsPanel />,
+  },
+  {
+    key: "invite",
+    label: "Invite Friends",
+    icon: <CgMathPlus />,
+    component: <Invite />,
   },
 ];
 

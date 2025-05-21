@@ -4,6 +4,7 @@ import Index from './pages/Index';
 import Home from './pages/Home';
 import { useSelector } from 'react-redux';
 import { selectUser } from './redux/authSlice';
+import Join from './pages/Join';
  
 function App() {
   const user = useSelector(selectUser);
@@ -13,6 +14,7 @@ function App() {
       <Routes>
 
         <Route path='/' element={<Index />} />
+        <Route path='/join' element={<Join />} />
         {user && user.token != "" && <Route path='/home' element={<Home />} /> }
         <Route path="*" element={<Index />} />
       </Routes>
