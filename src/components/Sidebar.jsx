@@ -10,8 +10,9 @@ import IconButton from './IconButton';
 import AddFriends from './AddFriends';
 import AcceptFriends from './AcceptFriends';
 import Invite from './Invite';
-import { sidebarActiveTab, updateSidebarActiveTab, activeChat } from '../redux/chatSlice';
+import { sidebarActiveTab, updateSidebarActiveTab, activeChat, updateActiveChat, resetDefault } from '../redux/chatSlice';
 import useIsMobile from '../hooks/useIsMobile'; 
+ 
 
 import { CgMathPlus } from "react-icons/cg";
 import { toast } from 'react-toastify';
@@ -62,21 +63,22 @@ function Sidebar() {
   const activeTab = useSelector(sidebarActiveTab); 
   const chat = useSelector(activeChat);
   const isMobile = useIsMobile();
-
+  console.log(activeTab)
   const getActiveLabel = () => {
     const activeTabData = sidebarTabs.find((tab) => tab.key === activeTab);
     return activeTabData ? activeTabData.label : "";
   };
  
   const handleTabChange = (key) => {
-    // if(isMobile && chat.id !== null){
-    //   dispatch(updateActiveChat({ id: null, username: null }));
-    // }
+    if(isMobile && chat.id !== null){
+      dispatch(updateActiveChat({ id: null, username: null }));
+    }
     dispatch(updateSidebarActiveTab(key));
   };
  
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(resetDefault());
     localStorage.clear();
     toast.success("Logged Out successfully.");
     navigate("/");

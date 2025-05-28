@@ -1,16 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import Auth from "../components/Auth"; 
 import { useSelector } from 'react-redux';
-import { selectUser } from '../redux/authSlice';
+import { selectIsLoggedIn } from '../redux/authSlice';
 import { useEffect } from "react";
 
 function Index() {
    
   const navigate = useNavigate(); 
-  const user = useSelector(selectUser);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   useEffect(()=>{    
-    if(user) 
+    if(isLoggedIn) 
       navigate("/home");
     //eslint-disable-next-line
   }, []);

@@ -3,20 +3,21 @@ import './App.css';
 import Index from './pages/Index';
 import Home from './pages/Home';
 import { useSelector } from 'react-redux';
-import { selectUser } from './redux/authSlice';
+import { selectIsLoggedIn } from './redux/authSlice';
 import Join from './pages/Join';
  
 function App() {
-  const user = useSelector(selectUser);
+
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
   return (
     <>
     <BrowserRouter>
       <Routes>
-
-        <Route path='/' element={<Index />} />
+        <Route path='/' element={isLoggedIn ? <Navigate to="/home" /> : <Index />} />
         <Route path='/join' element={<Join />} />
-        {user && user.token != "" && <Route path='/home' element={<Home />} /> }
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path='/home' element={isLoggedIn ? <Home /> : <Navigate to="/" />} /> 
+        <Route path="*" element={isLoggedIn ? <Home /> : <Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
     </> 
