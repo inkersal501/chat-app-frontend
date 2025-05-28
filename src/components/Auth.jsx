@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, selectIsLogin, updateIsLogin } from "../redux/authSlice";
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import Logo from './Logo';
+
 
 const Auth = () => {
 
@@ -55,14 +57,17 @@ const Auth = () => {
               <ClipLoader color="#1A2980" size={50} />
             </div>
           )}
-
-          <div className={`${loading ? "opacity-80 pointer-events-none" : ""}`}> 
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">
-              {isLogin ? 'Sign In' : 'Sign Up'}
-            </h2> 
-            <p className="text-sm text-gray-500">
-              {isLogin ? 'Welcome back to ChatApp' : 'Create a new ChatApp account'}
-            </p> 
+           
+          <div className="flex flex-col md:flex-row items-center md:space-x-4 mb-6">
+            <Logo />
+            <div className="text-center md:text-left">
+              <h2 className="text-3xl font-bold text-gray-800">
+                {isLogin ? 'Sign In' : 'Sign Up'}
+              </h2>
+              <p className="text-sm text-gray-500">
+                {isLogin ? 'Welcome back to ChatApp' : 'Create a new ChatApp account'}
+              </p>
+            </div>
           </div>
           
           <form className="space-y-4 mt-4" onSubmit={handleSubmit(onSubmit)}>

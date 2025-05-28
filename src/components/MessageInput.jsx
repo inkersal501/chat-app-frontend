@@ -19,7 +19,8 @@ function MessageInput() {
     const messageData =  {
       sender:{username: user.username, _id: user._id },
       content: message.trim(),
-      roomId: id
+      roomId: id,
+      createdAt: Date.now()
     }; 
     socket.emit("send_message", {roomId: id, message: messageData});
 

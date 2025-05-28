@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import message from "../js/message";
+import messageJS from "../js/message";
 import { selectUser } from "../redux/authSlice";
 import { useSelector } from "react-redux"; 
 import socket from '../js/server';
@@ -15,7 +15,7 @@ function LoadChat({ chatId }) {
         async function fetchMessages() {
             if (!chatId) return;
             setLoading(true);
-            const res = await message.getMessages(chatId, user.token);
+            const res = await messageJS.getMessages(chatId, user.token);
             if (res.status) {
                 setMessages(res.messages);
             }
@@ -51,7 +51,7 @@ function LoadChat({ chatId }) {
             </div>
         );
     }
-
+ 
     let previousDate = null;
     return (
         <div className="flex flex-col h-full overflow-hidden">
@@ -60,9 +60,10 @@ function LoadChat({ chatId }) {
                     <div className='px-4 py-2'>Start Chat...</div>
                 )}
                  
-                {messages.map((msg, idx) => {
-                    const isSender = msg.sender._id === user._id;
-                    const formattedDate = message.getMessageDate(msg.createdAt);
+                {
+                messages.map((msg, idx) => { 
+                    const isSender = msg.sender._id.toString() === user._id.toString();
+                    const formattedDate = messageJS.getMessageDate(msg.createdAt);
                     const showDateSeparator = formattedDate !== previousDate;
                     previousDate = formattedDate;
                     return (
@@ -84,7 +85,7 @@ function LoadChat({ chatId }) {
                                     <div><strong>{msg.sender.username}</strong></div>
                                     <div className='flex gap-5 justify-between items-end'>
                                         <span className='whitespace-pre'>{msg.content}</span>
-                                        <span className='text-end text-xs text-[#999]'>{message.convertDatetoTime(msg.createdAt)}</span>
+                                        <span className='text-end text-xs text-[#999]'>{messageJS.convertDatetoTime(msg.createdAt)}</span>
                                     </div>
                                 </div>
                             </div>

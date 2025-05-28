@@ -61,7 +61,7 @@ function AddFriends() {
         />
       </div>
  
-      {filteredSugg > 0 ? sugg.map((user, idx) => (
+      {filteredSugg.length > 0 ? filteredSugg.map((user, idx) => (
         <div key={idx} className="bg-slate-800 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer">
           <UserCard
             name={user.username}
