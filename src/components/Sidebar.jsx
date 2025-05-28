@@ -10,11 +10,11 @@ import IconButton from './IconButton';
 import AddFriends from './AddFriends';
 import AcceptFriends from './AcceptFriends';
 import Invite from './Invite';
-import { sidebarActiveTab, updateSidebarActiveTab, activeChat,updateActiveChat } from '../redux/chatSlice';
-import useIsMobile from '../hooks/useIsMobile';
-import { FcInvite } from "react-icons/fc";
+import { sidebarActiveTab, updateSidebarActiveTab, activeChat } from '../redux/chatSlice';
+import useIsMobile from '../hooks/useIsMobile'; 
 
 import { CgMathPlus } from "react-icons/cg";
+import { toast } from 'react-toastify';
 const sidebarTabs = [
   {
     key: "chat",
@@ -69,14 +69,16 @@ function Sidebar() {
   };
  
   const handleTabChange = (key) => {
-    if(isMobile && chat.id !== null){
-      dispatch(updateActiveChat({ id: null, username: null }));
-    }
+    // if(isMobile && chat.id !== null){
+    //   dispatch(updateActiveChat({ id: null, username: null }));
+    // }
     dispatch(updateSidebarActiveTab(key));
   };
  
   const handleLogout = () => {
     dispatch(logout());
+    localStorage.clear();
+    toast.success("Logged Out successfully.");
     navigate("/");
   };
     
