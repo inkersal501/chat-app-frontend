@@ -2,7 +2,6 @@ import axios from "axios";
 import {apiEndpoint} from "./config";
 import { toast } from "react-toastify";
 
-  
 const getSuggestions = async (userToken) => {
 
     try {
@@ -40,7 +39,6 @@ const getRequests = async (userToken)=> {
             return {status: true, requests: result.data.list};
         }            
     } catch (error) {  
-        // toast.error(error.response.data.msg);
         return {status: false, msg: error.response.data.msg};
     }
 }

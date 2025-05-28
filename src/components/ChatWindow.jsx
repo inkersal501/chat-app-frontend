@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { activeChat, updateActiveChat } from '../redux/chatSlice';
 import LoadChat from "./LoadChat";
 import MessageInput from "./MessageInput";
-import socket from "../js/server";
+import {socketJS} from "../js";
 import { useEffect, useState } from "react";
 import useIsMobile from '../hooks/useIsMobile';
 import { MdArrowBack } from "react-icons/md";
@@ -17,7 +17,7 @@ function ChatWindow() {
 
   useEffect(() => {
     if(id) {
-      socket.emit("join_room", id);
+      socketJS.emit("join_room", id);
       setShowChat(true);
     }else if(id === null){
       setShowChat(false);

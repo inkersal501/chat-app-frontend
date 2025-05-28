@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { selectUser } from "../redux/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { updateSidebarActiveTab } from '../redux/chatSlice';
-import connectJS from "../js/connect";
+import {connectJS} from "../js";
 import UserCard from "./UserCard";
 import Button from './Button';
 

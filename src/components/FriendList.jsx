@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { selectUser } from "../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import connect from "../js/connect";
+import {connectJS} from "../js";
 import UserCard from "./UserCard";
 import {updateActiveChat} from "../redux/chatSlice";
 
@@ -17,7 +17,7 @@ const FriendList = () => {
     useEffect(() => {
         async function getFriends() {
             setLoading(true);
-            const result = await connect.getFriends(user.token);
+            const result = await connectJS.getFriends(user.token);
             if (result.status && result.friends.length > 0) {
                 setFriends(result.friends);
             }

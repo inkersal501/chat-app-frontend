@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { selectUser } from "../redux/authSlice";
 import { useSelector } from "react-redux";
-import connectJS from "../js/connect";
+import {connectJS} from "../js";
 import UserCard from "./UserCard";
 
 function AddFriends() {

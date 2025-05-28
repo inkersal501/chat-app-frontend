@@ -3,9 +3,9 @@ import authReducer from "./authSlice";
 import chatReducer from "./chatSlice";
 
 const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    chatWindow: chatReducer,
+  reducer : {
+    auth : authReducer,
+    chatWindow : chatReducer,
   },
 });
 

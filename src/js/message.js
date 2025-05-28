@@ -14,7 +14,6 @@ const getMessages = async (chatId, userToken) => {
     }
 };
 
-
 const sendMessage = async (chatId, userToken, content) => {
     try {
         const result = await axios.post(`${apiEndpoint}/message/send`, {chatId, content}, { 
@@ -39,6 +38,7 @@ const convertDatetoTime = (date) => {
 
     return time;
 };
+
 function getMessageDate(dateString) {
     const messageDate = new Date(dateString);
     const today = new Date();

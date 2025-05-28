@@ -3,7 +3,7 @@ import { selectUser } from "../redux/authSlice";
 import { ImCheckmark } from "react-icons/im";
 import IconButton from "./IconButton";
 import { useState } from "react";
-import userJs from "../js/user";
+import {userJS} from "../js";
 import { login } from "../redux/authSlice";
 
 const SettingsPanel = () => {
@@ -14,7 +14,7 @@ const SettingsPanel = () => {
 
     const handleUsernameUpdate = async () => { 
         try {
-            const update = await userJs.updateUsername(user.token, username);
+            const update = await userJS.updateUsername(user.token, username);
             dispatch(login({ ...update }));
         } catch (error) {
             console.error(error);

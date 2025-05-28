@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { selectUser } from "../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux"; 
 import UserCard from "./UserCard";
-import chatJS from "../js/chat";
+import {chatJS} from "../js";
 import {activeChat , refreshChatlist, updateActiveChat, updateRefreshChatlist} from "../redux/chatSlice";
 import useIsMobile from '../hooks/useIsMobile';
 

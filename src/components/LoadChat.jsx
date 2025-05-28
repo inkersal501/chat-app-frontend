@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import messageJS from "../js/message";
+import {messageJS} from "../js";
 import { selectUser } from "../redux/authSlice";
 import { useSelector } from "react-redux"; 
-import socket from '../js/server';
+import {socketJS} from '../js';
 
 function LoadChat({ chatId }) {
 
@@ -30,10 +30,10 @@ function LoadChat({ chatId }) {
             }
         };
 
-        socket.on("receive_message", handleNewMessage);
+        socketJS.on("receive_message", handleNewMessage);
 
         return () => {
-            socket.off("receive_message", handleNewMessage);
+            socketJS.off("receive_message", handleNewMessage);
         };
     }, [chatId, user.token]);
  

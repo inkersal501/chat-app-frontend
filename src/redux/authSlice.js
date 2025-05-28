@@ -8,19 +8,19 @@ const initialState = {
 };
 
 const authSlice = createSlice({
-  name: "auth",
+  name : "auth",
   initialState,
-  reducers: {
+  reducers : {
     updateIsLogin : (state, action) => {
       state.isLogin = action.payload;
     },
-    login: (state, action) => {
+    login : (state, action) => {
       state.user = {...state.user, ...action.payload};
       state.isLoggedin = true;
       localStorage.setItem("isLoggedin", JSON.stringify(state.isLoggedin));
       localStorage.setItem("user", JSON.stringify(state.user));
     },
-    logout: (state) => {
+    logout : (state) => {
       state.user = defaultState.auth.user;
       state.isLoggedin = defaultState.auth.isLoggedin; 
     }, 

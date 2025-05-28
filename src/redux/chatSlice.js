@@ -11,9 +11,9 @@ if (savedState) {
   localStorage.setItem("chatWindow", JSON.stringify(initialState));
 }
 const chatSlice = createSlice({
-    name: "chatWindow",
+    name : "chatWindow",
     initialState, 
-    reducers: {
+    reducers : {
         updateSidebarActiveTab : (state, action) => {
             state.activeTab = action.payload;
             localStorage.setItem("chatWindow", JSON.stringify(state));
@@ -26,10 +26,10 @@ const chatSlice = createSlice({
             state.refreshChatlist = action.payload;
             localStorage.setItem("chatWindow", JSON.stringify(state));
         }, 
-        resetDefault: (state) => {
+        resetDefault : (state) => {
             state.activeTab = defaultState.chatWindow.activeTab;
-            state.activeChat    = defaultState.chatWindow.activeChat;
-            state.refreshChatlist   = defaultState.chatWindow.refreshChatlist; 
+            state.activeChat = defaultState.chatWindow.activeChat;
+            state.refreshChatlist = defaultState.chatWindow.refreshChatlist; 
             localStorage.setItem("chatWindow", JSON.stringify(state));
             return state;
         }

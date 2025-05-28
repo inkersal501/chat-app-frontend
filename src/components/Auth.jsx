@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'; 
-import auth from "../js/auth";
+import {authJS} from "../js";
 import { ClipLoader } from 'react-spinners';
 import { useDispatch, useSelector } from "react-redux";
 import { login, selectIsLogin, updateIsLogin } from "../redux/authSlice";
@@ -24,13 +24,13 @@ const Auth = () => {
     
     try {
       if (isLogin) {
-        const user = await auth.signIn(data);
+        const user = await authJS.signIn(data);
         if (user) {
           dispatch(login({ ...user }));
           navigate("/home");
         }
       } else {
-        const signUp = await auth.signUp(data);
+        const signUp = await authJS.signUp(data);
         if (signUp) {
           dispatch(updateIsLogin(true));
         }
@@ -119,12 +119,7 @@ const Auth = () => {
               </p>
             )}
             </div>
-            {/* <button
-              type="submit"
-              className="w-full bg-[#1A2980] text-white font-medium py-2 rounded-lg hover:bg-[#26D0CE] transition duration-300 cursor-pointer"
-            >
-              {isLogin ? 'Sign In' : 'Sign Up'}
-            </button> */}
+            
             <button
               type="submit"
               disabled={loading}

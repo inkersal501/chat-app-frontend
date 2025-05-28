@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { selectUser } from "../redux/authSlice";
 import { activeChat, updateRefreshChatlist } from '../redux/chatSlice';
 import { useDispatch, useSelector } from "react-redux";
-import messageJs from "../js/message";
-import socket from "../js/server";
+import {messageJS} from "../js";
+import {socketJS} from "../js";
 
 function MessageInput() {
 
@@ -22,9 +22,9 @@ function MessageInput() {
       roomId: id,
       createdAt: Date.now()
     }; 
-    socket.emit("send_message", {roomId: id, message: messageData});
+    socketJS.emit("send_message", {roomId: id, message: messageData});
 
-    await messageJs.sendMessage(id, user.token, message); 
+    await messageJS.sendMessage(id, user.token, message); 
     dispatch(updateRefreshChatlist(true));
     setMessage("");
   };
