@@ -4,8 +4,10 @@ import Button from "../components/Button";
 import { useDispatch } from "react-redux";
 import { updateIsLogin } from "../redux/authSlice"; 
 import { toast } from "react-toastify";
+import Logo from "../components/Logo";
 
 function Join() {
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -35,6 +37,7 @@ function Join() {
         };
     return (
         <div className="flex flex-col gap-4 items-center justify-center min-h-screen w-full bg-slate-900 px-4">
+            <div><Logo width="20" /></div>
             <h1 className="text-3xl font-bold">Join in this Chat App</h1>
             <div className="flex items-center justify-center">
                 <div>
