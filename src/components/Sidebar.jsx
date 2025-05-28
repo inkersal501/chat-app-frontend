@@ -63,7 +63,7 @@ function Sidebar() {
   const activeTab = useSelector(sidebarActiveTab); 
   const chat = useSelector(activeChat);
   const isMobile = useIsMobile();
-  console.log(activeTab)
+
   const getActiveLabel = () => {
     const activeTabData = sidebarTabs.find((tab) => tab.key === activeTab);
     return activeTabData ? activeTabData.label : "";

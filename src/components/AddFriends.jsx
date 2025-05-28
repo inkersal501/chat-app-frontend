@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { selectUser } from "../redux/authSlice";
 import { useSelector } from "react-redux";
-import connect from "../js/connect";
+import connectJS from "../js/connect";
 import UserCard from "./UserCard";
 
 function AddFriends() {
+
   const [sugg, setSugg] = useState([]);
   const [filteredSugg, setFilteredSugg] = useState([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
   const user = useSelector(selectUser); 
 
   useEffect(() => {
     async function getSuggestions() {
-      const result = await connect.getSuggestions(user.token); 
+      setLoading(true);
+      const result = await connectJS.getSuggestions(user.token); 
       if (result.status && result.suggestions.length > 0) {
         setSugg(result.suggestions.map(s => ({ ...s, status: "send" })));
       } 
+      setLoading(false);
     }
     getSuggestions();
     //eslint-disable-next-line
@@ -46,7 +50,7 @@ function AddFriends() {
       user._id === toUserId ? { ...user, status: "request-sent" } : user
     ));
 
-    await connect.sendRequest(toUserId, user.token); 
+    await connectJS.sendRequest(toUserId, user.token); 
   };
 
   return (
@@ -61,17 +65,19 @@ function AddFriends() {
         />
       </div>
  
-      {filteredSugg.length > 0 ? filteredSugg.map((user, idx) => (
-        <div key={idx} className="bg-slate-800 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer">
-          <UserCard
-            name={user.username}
-            type={user.status}
-            onActionClick={() => sendRequest(user._id)}
-          />
-        </div>
-      )): (
-        <div className="p-4 text-gray-400">No Users found.</div>
-      )}
+      {loading ? 
+        (<div className="p-4 text-gray-400">Loading...</div>)
+        :
+        filteredSugg.length > 0 ? filteredSugg.map((user, index) => (
+          <div key={index} className="bg-slate-800 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer">
+            <UserCard
+              name={user.username}
+              type={user.status}
+              onActionClick={() => sendRequest(user._id)}
+            />
+          </div>
+        )): ( <div className="p-4 text-gray-400">No Users found.</div> )
+      }
     </div>
   );
 }

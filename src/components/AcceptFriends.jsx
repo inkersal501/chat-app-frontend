@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { selectUser } from "../redux/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { updateSidebarActiveTab } from '../redux/chatSlice';
-import connect from "../js/connect";
+import connectJS from "../js/connect";
 import UserCard from "./UserCard";
 import Button from './Button';
 
@@ -12,14 +12,17 @@ function AcceptFriends() {
   const [reqUsers, setReqUsers] = useState([]);
   const [filteredRequests, setFilteredRequests] = useState([]);
   const [search, setSearch] = useState(""); 
+  const [loading, setLoading] = useState(true);
   const user = useSelector(selectUser);
 
   useEffect(() => {
     async function getRequests() {
-      const result = await connect.getRequests(user.token);
-      if (result.status && result.requests.length > 0) {
-        setReqUsers(result.requests.map(u => ({ ...u, status: "accept" })));
+      setLoading(true);
+      const result = await connectJS.getRequests(user.token);
+      if (result.status) {
+        setReqUsers(result.requests.map(u => ({ ...u, status: "accept" })));        
       } 
+      setLoading(false);
     }
     getRequests();
     //eslint-disable-next-line
@@ -49,14 +52,14 @@ function AcceptFriends() {
       user._id === fromUserId ? { ...user, status: "request-accepted" } : user
     ));
 
-    await connect.acceptRequest(fromUserId, user.token); 
+    await connectJS.acceptRequest(fromUserId, user.token); 
   };
 
   const declineRequest = async (fromUserId) => {
     setReqUsers(prev => prev.map(user =>
       user._id === fromUserId ? { ...user, status: "request-declined" } : user
     ));
-    await connect.declineRequest(fromUserId, user.token); 
+    await connectJS.declineRequest(fromUserId, user.token); 
   };
 
   const handleFindFriendsClick = () => {
@@ -74,36 +77,37 @@ function AcceptFriends() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
- 
-        
-     
-
-      {filteredRequests.length > 0 ? filteredRequests.map((user, idx) => (
-        <div
-          key={idx}
-          className="bg-slate-800 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer"
-        >
-          <UserCard
-            name={user.username}
-            type={user.status}
-            onActionClick={() => acceptRequest(user._id)}
-            onDeclineClick={() => declineRequest(user._id)}
-          />
-        </div>
-      )):(
-        <>
-          <div className="p-4 text-gray-400">No Requests found.</div>   
-          <div className='px-4 py-2 text-white'>               
-            {reqUsers.length === 0 && (
-              <div className='text-center mt-4'>
-                <Button onClick={handleFindFriendsClick}>
-                  Find Friends
-                </Button>
-              </div>            
-            )}
+  
+      {loading ? 
+        (<div className="p-4 text-gray-400">Loading...</div>)
+        :
+        filteredRequests.length > 0 ? filteredRequests.map((user, index) => (
+          <div
+            key={index}
+            className="bg-slate-800 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer"
+          >
+            <UserCard
+              name={user.username}
+              type={user.status}
+              onActionClick={() => acceptRequest(user._id)}
+              onDeclineClick={() => declineRequest(user._id)}
+            />
           </div>
-        </>
-      )}
+        )):(
+          <>
+            <div className="p-4 text-gray-400">No Requests found.</div>   
+            <div className='px-4 py-2 text-white'>               
+              {reqUsers.length === 0 && (
+                <div className='text-center mt-4'>
+                  <Button onClick={handleFindFriendsClick}>
+                    Find Friends
+                  </Button>
+                </div>            
+              )}
+            </div>
+          </>
+        )
+      }
     </div>
   );
 }

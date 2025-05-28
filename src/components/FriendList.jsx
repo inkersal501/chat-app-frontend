@@ -10,15 +10,18 @@ const FriendList = () => {
     const [friends, setFriends] = useState([]);
     const [filteredFriends, setFilteredFriends] = useState([]);
     const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(true);
     const user = useSelector(selectUser);    
     const dispatch = useDispatch();
 
     useEffect(() => {
         async function getFriends() {
+            setLoading(true);
             const result = await connect.getFriends(user.token);
             if (result.status && result.friends.length > 0) {
                 setFriends(result.friends);
             }
+            setLoading(false);
         }
         getFriends();
         // eslint-disable-next-line
@@ -58,13 +61,15 @@ const FriendList = () => {
             />
             </div>
 
-            {filteredFriends.length > 0 ? filteredFriends.map((user, idx) => (
-                <div key={idx} className="bg-slate-800 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer">
-                    <UserCard name={user.username} type="friends" openChat={()=>handleOpenChat(user.chatId, user.username)}/>
-                </div> 
-            )) : (
-            <div className="p-4 text-gray-400">No friends found.</div>
-            )} 
+            {loading ? 
+                (<div className="p-4 text-gray-400">Loading...</div>)
+                :
+                filteredFriends.length > 0 ? filteredFriends.map((friend, index) => (
+                    <div key={index} className="bg-slate-800 hover:bg-slate-700 border-b border-slate-700 transition cursor-pointer">
+                        <UserCard name={friend.username} type="friends" openChat={()=>handleOpenChat(friend.chatId, friend.username)}/>
+                    </div> 
+                )) : ( <div className="p-4 text-gray-400">No friends found.</div> )
+            } 
         </div>
     );
 };

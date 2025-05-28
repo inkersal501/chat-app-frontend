@@ -60,14 +60,13 @@ function LoadChat({ chatId }) {
                     <div className='px-4 py-2'>Start Chat...</div>
                 )}
                  
-                {
-                messages.map((msg, idx) => { 
+                {messages.map((msg, index) => { 
                     const isSender = msg.sender._id.toString() === user._id.toString();
                     const formattedDate = messageJS.getMessageDate(msg.createdAt);
                     const showDateSeparator = formattedDate !== previousDate;
                     previousDate = formattedDate;
                     return (
-                        <div key={idx}>
+                        <div key={index}>
                             {showDateSeparator && (
                                 <div className="text-center my-2">
                                     <span className="px-2 py-1 bg-slate-900 text-gray-400 text-xs rounded-md cursor-default">
