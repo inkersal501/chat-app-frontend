@@ -3,8 +3,8 @@ import { defaultState } from "../js/config";
 
 const initialState = {
   isLogin : defaultState.auth.isLogin,
-  isLoggedin : localStorage.getItem("isLoggedin") || defaultState.auth.isLoggedin,
-  user : JSON.parse(localStorage.getItem("user")) || defaultState.auth.user,  
+  isLoggedin : false,
+  user : null,
 };
 
 const authSlice = createSlice({
@@ -17,12 +17,12 @@ const authSlice = createSlice({
     login : (state, action) => {
       state.user = {...state.user, ...action.payload};
       state.isLoggedin = true;
-      localStorage.setItem("isLoggedin", JSON.stringify(state.isLoggedin));
-      localStorage.setItem("user", JSON.stringify(state.user));
     },
     logout : (state) => {
       state.user = defaultState.auth.user;
       state.isLoggedin = defaultState.auth.isLoggedin; 
+      localStorage.removeItem("isLoggedin");
+      localStorage.removeItem("user");
     }, 
   },
 });

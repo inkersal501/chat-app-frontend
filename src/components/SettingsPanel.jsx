@@ -14,8 +14,8 @@ const SettingsPanel = () => {
 
     const handleUsernameUpdate = async () => { 
         try {
-            const update = await userJS.updateUsername(user.token, username);
-            dispatch(login({ ...update }));
+            const update = await userJS.updateUsername(username);
+            if (update) dispatch(login({ ...update }));
         } catch (error) {
             console.error(error);
         }

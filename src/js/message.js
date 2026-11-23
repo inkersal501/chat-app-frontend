@@ -1,29 +1,25 @@
 import axios from "axios";
 import {apiEndpoint} from "./config";
 
-const getMessages = async (chatId, userToken) => {
+const getMessages = async (chatId) => {
     try {
-        const result = await axios.get(`${apiEndpoint}/message/${chatId}`, { 
-            headers: { Authorization: `Bearer ${userToken}`}
-        });
+        const result = await axios.get(`${apiEndpoint}/message/${chatId}`);
         if(result.status === 200){      
             return {status: true, messages: result.data.list};
         }            
     } catch (error) {  
-        return {status: false, msg: error.response.data.msg};
+        return {status: false, msg: error.response?.data?.msg || "Unable to load messages."};
     }
 };
 
-const sendMessage = async (chatId, userToken, content) => {
+const sendMessage = async (chatId, content) => {
     try {
-        const result = await axios.post(`${apiEndpoint}/message/send`, {chatId, content}, { 
-            headers: { Authorization: `Bearer ${userToken}`}
-        });
+        const result = await axios.post(`${apiEndpoint}/message/send`, {chatId, content});
         if(result.status === 200){      
             return {status: true, messages: result.data.list};
         }            
     } catch (error) {  
-        return {status: false, msg: error.response.data.msg};
+        return {status: false, msg: error.response?.data?.msg || "Unable to send this message."};
     }
 };
 

@@ -3,8 +3,10 @@ import {messageJS} from "../js";
 import { selectUser } from "../redux/authSlice";
 import { useSelector } from "react-redux"; 
 import {socketJS} from '../js';
+import { FaRegCopy } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
-function LoadChat({ chatId }) {
+function LoadChat({ chatId, query = "" }) {
 
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -15,7 +17,7 @@ function LoadChat({ chatId }) {
         async function fetchMessages() {
             if (!chatId) return;
             setLoading(true);
-            const res = await messageJS.getMessages(chatId, user.token);
+            const res = await messageJS.getMessages(chatId);
             if (res.status) {
                 setMessages(res.messages);
             }
@@ -57,16 +59,27 @@ function LoadChat({ chatId }) {
         <div className="flex flex-col h-full overflow-hidden">
             <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
                 {messages.length === 0 && (
-                    <div className='px-4 py-2'>Start Chat...</div>
+                    <div className='first-message-prompt'><span className="first-message-mark">+</span><strong>This is the beginning</strong><span>Say hello to your friend and get the conversation going.</span></div>
                 )}
-                 
-                {messages.map((msg, index) => { 
+
+                {messages.length > 0 && <div className="chat-start-note"><span /> Conversation history <span /></div>}
+
+                {messages.filter((msg) => msg.content.toLowerCase().includes(query.trim().toLowerCase())).map((msg, index, visibleMessages) => {
                     const isSender = msg.sender._id.toString() === user._id.toString();
                     const formattedDate = messageJS.getMessageDate(msg.createdAt);
+                    const previousDate = index > 0 ? messageJS.getMessageDate(visibleMessages[index - 1].createdAt) : null;
+                    const sameAuthor = index > 0 && visibleMessages[index - 1].sender._id.toString() === msg.sender._id.toString() && previousDate === formattedDate;
                     const showDateSeparator = formattedDate !== previousDate;
-                    previousDate = formattedDate;
+                    const copyMessage = async () => {
+                        try {
+                            await navigator.clipboard.writeText(msg.content);
+                            toast.success("Message copied");
+                        } catch {
+                            toast.error("Could not copy this message");
+                        }
+                    };
                     return (
-                        <div key={index}>
+                        <div key={msg._id || `${msg.createdAt}-${index}`} className={`message-row ${isSender ? 'is-mine' : ''} ${sameAuthor ? 'is-grouped' : ''}`}>
                             {showDateSeparator && (
                                 <div className="text-center my-2">
                                     <span className="px-2 py-1 bg-slate-900 text-gray-400 text-xs rounded-md cursor-default">
@@ -75,22 +88,21 @@ function LoadChat({ chatId }) {
                                 </div>
                             )}
 
-                            <div className={`flex items-center gap-3 ${isSender ? 'flex-row-reverse' : ''}`}>
-                                <div className="w-10 h-10 flex items-center justify-center rounded-full text-gray-900
-                                bg-gradient-to-r from-gray-200 via-slate-100 to-gray-300 font-semibold text-lg uppercase">
-                                    {msg.sender.username[0]}
-                                </div>
-                                <div className={`py-1 px-2 rounded-xl max-w-[90%] ${isSender ? 'bg-gray-800 border border-gray-700' : 'glass-bg'} text-white self-start`}>
-                                    <div><strong>{msg.sender.username}</strong></div>
-                                    <div className='flex gap-5 justify-between items-end'>
+                            <div className={`flex items-end gap-3 ${isSender ? 'flex-row-reverse' : ''}`}>
+                                {!isSender && !sameAuthor ? <div className="message-avatar">{msg.sender.username[0]}</div> : !isSender ? <div className="message-avatar-spacer" /> : null}
+                                <div className={`message-bubble py-1 px-2 rounded-xl max-w-[90%] ${isSender ? 'bg-gray-800 border border-gray-700' : 'glass-bg'} text-white self-start`}>
+                                    {!sameAuthor && <div className="message-author">{isSender ? 'You' : msg.sender.username}</div>}
+                                    <div className='message-content-line'>
                                         <span className='whitespace-pre'>{msg.content}</span>
-                                        <span className='text-end text-xs text-[#999]'>{messageJS.convertDatetoTime(msg.createdAt)}</span>
+                                        <span className='message-time'>{messageJS.convertDatetoTime(msg.createdAt)}</span>
                                     </div>
+                                    <button type="button" className="message-copy" onClick={copyMessage} aria-label="Copy message" title="Copy message"><FaRegCopy /></button>
                                 </div>
                             </div>
                         </div>
                     );
-                })} 
+                })}
+                {query.trim() && !messages.some((msg) => msg.content.toLowerCase().includes(query.trim().toLowerCase())) && <div className="message-search-empty">No matching messages found.</div>}
                 <div ref={messagesEndRef} />
             </div>
         </div>

@@ -5,13 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, selectIsLogin, updateIsLogin } from "../redux/authSlice";
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import Logo from './Logo';
+import { socketJS } from '../js';
 
 
 const Auth = () => {
 
   const isLogin = useSelector(selectIsLogin);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
@@ -27,6 +30,7 @@ const Auth = () => {
         const user = await authJS.signIn(data);
         if (user) {
           dispatch(login({ ...user }));
+          socketJS.connect();
           navigate("/home");
         }
       } else {
@@ -48,9 +52,9 @@ const Auth = () => {
   }, [isLogin]);
 
   return (
-    <div className="w-full">
+    <div className="auth-stage w-full">
       
-        <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md mx-auto relative border-e-4 border-b-4 border-slate-400">
+        <div className="auth-card bg-white p-8 rounded-2xl shadow-lg w-full max-w-md mx-auto relative">
 
           {loading && (
             <div className="absolute inset-0 bg-opacity-50 backdrop-blur-[1.5px] flex items-center justify-center z-50 rounded-2xl">
@@ -65,7 +69,7 @@ const Auth = () => {
                 {isLogin ? 'Sign In' : 'Sign Up'}
               </h2>
               <p className="text-sm text-gray-500">
-                {isLogin ? 'Welcome back to ChatApp' : 'Create a new ChatApp account'}
+                {isLogin ? 'Welcome back to Convo' : 'Create your Convo account'}
               </p>
             </div>
           </div>
@@ -105,14 +109,26 @@ const Auth = () => {
               <label htmlFor="password" className="text-gray-400 group-focus-within:text-[#1A2980]">
                 Password
               </label>
-              <input 
-                type="password"
-                id="password"
-                placeholder="Enter Your Password"
-                autoComplete='off'
-                {...register("password", { required: true, minLength: 8 })}
-                className="w-full px-4 py-2 text-black font-medium border border-zinc-300 rounded-lg focus-visible:outline-none focus-visible:border focus-visible:border-[#1A2980]"
-              />
+              <div className="password-field">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  placeholder="Enter Your Password"
+                  autoComplete={isLogin ? 'current-password' : 'new-password'}
+                  {...register("password", { required: true, minLength: 8 })}
+                  className="w-full px-4 py-2 text-black font-medium border border-zinc-300 rounded-lg focus-visible:outline-none focus-visible:border focus-visible:border-[#1A2980]"
+                />
+                <button
+                  type="button"
+                  className="password-visibility"
+                  onClick={() => setShowPassword((visible) => !visible)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  aria-pressed={showPassword}
+                  aria-controls="password"
+                >
+                  {showPassword ? <FaEyeSlash aria-hidden="true" /> : <FaEye aria-hidden="true" />}
+                </button>
+              </div>
               {errors.password && (
               <p className="text-red-500 text-sm mt-1">
                 Password must be at least 8 characters

@@ -16,7 +16,7 @@ function Invite() {
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: "Join me on this chat app!",
+                    title: "Join me on Convo!",
                     text: "Let's chat here:",
                     url: inviteLink,
                 });

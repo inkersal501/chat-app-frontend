@@ -87,7 +87,7 @@ function Sidebar() {
   const sidebarContent = ()=>{
     return (
       // <div className={`bg-slate-800`}>
-        <div className="flex-1 bg-slate-800 text-white overflow-y-auto border-t md:border-t-0 md:border-e border-slate-600">
+        <div className="sidebar-content flex-1 bg-slate-800 text-white overflow-y-auto border-t md:border-t-0 md:border-e border-slate-600">
           <h2 className="text-xl font-bold capitalize p-4 border-b border-slate-700">
             {getActiveLabel()}
           </h2>
@@ -100,10 +100,10 @@ function Sidebar() {
   };
 
   return (
-    <div className={`w-full md:w-2/6 ${(isMobile && chat.id !== null)?'h-1/9':'h-1/2'} bg-slate-800 md:h-full flex flex-col md:flex-row overflow-hidden`}>
+    <aside className={`chat-sidebar w-full md:w-2/6 ${(isMobile && chat.id !== null)?'h-1/9':'h-1/2'} bg-slate-800 md:h-full flex flex-col md:flex-row overflow-hidden`}>
       
       {/* Sidebar Icon Panel */}
-      <div className={`h-16 md:h-full w-full md:w-20 bg-slate-900 text-white flex space-x-2 md:flex-col items-center justify-between px-4 md:px-0 md:py-4 md:space-y-2 shadow-lg z-10`}>
+      <nav aria-label="Chat sections" className={`icon-rail h-16 md:h-full w-full md:w-20 bg-slate-900 text-white flex space-x-2 md:flex-col items-center justify-between px-4 md:px-0 md:py-4 md:space-y-2 shadow-lg z-10`}>
         <div className="flex space-y-0 space-x-1 md:space-x-0 md:flex-col items-center md:space-y-4 me-0">
           {sidebarTabs.map((tab) => (
             <IconButton
@@ -124,12 +124,12 @@ function Sidebar() {
             position="right"
           />
         </div>
-      </div>
+      </nav>
 
       {/* Sidebar Content */}
       {(!isMobile || (isMobile && chat.id === null)) && sidebarContent()}
      
-    </div>
+    </aside>
   );
 }
 

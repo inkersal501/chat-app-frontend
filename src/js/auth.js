@@ -10,7 +10,7 @@ const signIn = async (req)=>{
             return result.data.user;
         }            
     } catch (error) {  
-        toast.error(error.response.data.msg);
+        toast.error(error.response?.data?.msg || "Unable to sign in. Please try again.");
         return false;
     }
 };
@@ -23,7 +23,7 @@ const signUp = async (req) => {
             return true;
         }            
     } catch (error) {
-        toast.error(error.response.data.msg);
+        toast.error(error.response?.data?.msg || "Unable to create your account. Please try again.");
         return false;
     }
 };

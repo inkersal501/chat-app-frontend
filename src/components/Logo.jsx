@@ -1,10 +1,6 @@
-import logo from '../assets/logo-app.png';
-
-function Logo({width = 25}) {
+function Logo() {
   return (
-    <div>
-        <img src={logo} alt="Chat App" className={`w-${width}`}/>
-    </div>
+    <span className="convo-logo" aria-label="Convo">c<span>.</span></span>
   )
 }
 
