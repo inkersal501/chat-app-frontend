@@ -26,3 +26,26 @@ html{scroll-behavior:smooth}body{margin:0;min-width:320px;background:var(--ink);
 @media(max-width:430px){.landing-nav{padding-inline:15px}.landing-login{padding:9px 10px}.landing-hero{width:calc(100% - 32px);padding-top:62px}.landing-hero h1{font-size:clamp(42px,11vw,55px);letter-spacing:-3px}.landing-actions{align-items:flex-start;flex-direction:column;gap:16px}.landing-art{height:305px}.mock-window{min-height:300px}.mock-body{grid-template-columns:45px 1fr}.mock-chat{padding:12px}.art-sticker{font-size:7px}.sticker-bottom{right:0;bottom:16px}.auth-card{padding:26px 19px!important}.app-topbar{height:60px;padding:0 10px}.app-topbar h1{font-size:14px}.profile-trigger{gap:6px;padding:3px}.profile-trigger>span{display:none}.profile-trigger>div{width:31px;height:31px}.icon-rail{padding-inline:6px}.icon-rail button{width:35px;height:35px}.chat-list-item .w-10.h-10{width:35px;height:35px}.conversation-preview{margin-left:49px}.message-scroll{padding-inline:6px!important}.message-scroll .glass-bg,.message-scroll .bg-gray-800{max-width:85vw}.join-card{padding:28px 20px}}
 .password-field{position:relative}.password-field input{padding-right:46px}.password-visibility{position:absolute;top:50%;right:8px;display:grid;width:34px;height:34px;place-items:center;transform:translateY(-50%);border:0;border-radius:7px;background:transparent;color:#777b70;transition:background .2s,color .2s}.password-visibility:hover{background:#c6f36a20;color:#718d3b}.password-visibility:focus-visible{outline:2px solid #91ad58;outline-offset:2px}.password-visibility svg{font-size:14px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+.convo-oidc-action {
+    display: block;
+    margin-top: .75rem;
+    padding: .55rem .8rem;
+    border: 1px solid #62674c;
+    border-radius: .55rem;
+    color: #c6f36a;
+    text-align: center;
+}
+.convo-oidc-notice {
+    padding: .55rem 1rem;
+    background: #282b22;
+    color: #eef0e5;
+}
+.convo-oidc-notice button {
+    margin-inline-start: 1rem;
+    text-decoration: underline;
+}
+.convo-oidc-action:focus-visible, .convo-oidc-notice button:focus-visible {
+    outline: 2px solid #c6f36a;
+    outline-offset: 3px;
+}

@@ -3,9 +3,10 @@ import {authJS} from "../js";
 import { ClipLoader } from 'react-spinners';
 import { useDispatch, useSelector } from "react-redux";
 import { login, selectIsLogin, updateIsLogin } from "../redux/authSlice";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { oidcEnabled, oidcEndpoint } from "../js/oidc";
 import Logo from './Logo';
 import { socketJS } from '../js';
 
@@ -20,6 +21,8 @@ const Auth = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const oidcResult = params.get("oidc");
  
   const onSubmit  = async (data) => { 
 
@@ -74,6 +77,8 @@ const Auth = () => {
             </div>
           </div>
           
+          {oidcResult === "failed" && <p role="alert">Identity provider sign-in failed. Please try again.</p>}
+          {oidcResult === "unlinked" && <p role="status">Sign in with your Convo account first, then link your identity provider in Settings.</p>}
           <form className="space-y-4 mt-4" onSubmit={handleSubmit(onSubmit)}>
             {!isLogin && (
               <div className="group focus-within:text-[#1A2980]">
@@ -147,6 +152,7 @@ const Auth = () => {
             </button> 
           </form>
   
+          {isLogin && oidcEnabled && <a className="convo-oidc-action" href={oidcEndpoint + "/start"}>Sign in with your identity provider</a>}
           <div className="text-center mt-4 text-sm text-gray-600">
             {isLogin ? (
               <>

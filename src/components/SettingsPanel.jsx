@@ -1,3 +1,4 @@
+import { oidcEnabled, startOidcLink } from "../js/oidc";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../redux/authSlice";
 import { ImCheckmark } from "react-icons/im";
@@ -10,6 +11,8 @@ const SettingsPanel = () => {
 
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
+    const [providerError, setProviderError] = useState("");
+    const [linking, setLinking] = useState(false);
     const [username, setUsername] = useState(user.username || "");
 
     const handleUsernameUpdate = async () => { 
@@ -54,6 +57,19 @@ const SettingsPanel = () => {
                 </div>
                 
             </div>
+            {oidcEnabled && <div className="p-4 space-y-2">
+                <button type="button" className="convo-oidc-action" disabled={linking} onClick={async () => {
+                    setLinking(true);
+                    setProviderError("");
+                    try {
+                        await startOidcLink();
+                    } catch {
+                        setProviderError("Could not start account linking. Please try again.");
+                        setLinking(false);
+                    }
+                }}>Link identity provider</button>
+                {providerError && <p role="alert">{providerError}</p>}
+            </div>}
         </div>
     );
 }
