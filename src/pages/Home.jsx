@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import ChatWindow from "../components/ChatWindow";
@@ -11,6 +12,8 @@ const feedEnabled = import.meta.env.VITE_CONVO_FEED_ENABLED === "true" ||
 const sections = feedEnabled ? ["Chats", "Feed", "People"] : ["Chats", "People"];
 
 function Home() {
+    const [params, setParams] = useSearchParams();
+    const oidc = params.get("oidc");
     const [section, setSection] = useState("Chats");
     return <div className="chat-shell h-screen w-screen flex flex-col">
         <TopBar />
@@ -18,6 +21,13 @@ function Home() {
             {sections.map((item) => <button key={item} aria-current={section === item ? "page" : undefined}
                 onClick={() => setSection(item)}>{item}</button>)}
         </nav>
+        {(oidc === "linked" || oidc === "failed") && <div className="convo-oidc-notice" role="status">
+            {oidc === "linked" ? "Identity provider linked." : "Could not link the identity provider."}
+            <button type="button" onClick={() => setParams((params) => {
+                params.delete("oidc");
+                return params;
+            }, { replace: true })}>Dismiss</button>
+        </div>}
         <main className="flex flex-1 min-h-0 overflow-hidden">
             {section === "Chats" && <div className="flex flex-col md:flex-row flex-1 overflow-hidden bg-slate-800">
                 <Sidebar />

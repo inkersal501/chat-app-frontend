@@ -77,6 +77,17 @@ Feed is enabled in local development. For a production build, set `CONVO_FEED_EN
 
 Configure `CONVO_MODERATOR_IDS` as a comma-separated list of Convo user IDs authorized to list open reports and record their disposition through the moderation API. Keep this list on the backend. The queue and its audit history are stored in MongoDB.
 
-The current chat service still uses the existing server-readable message storage. The Matrix and shared identity-provider rollout, account linking, device verification and recovery, and migration to a read-only legacy archive are separate deployment milestones.
+The current chat service still uses the existing server-readable message storage. The Matrix rollout, device verification and recovery, and migration to a read-only legacy archive are separate deployment milestones.
 
 Run the backend integration test with `MONGODB_TEST_URI=mongodb://127.0.0.1:27017 npm test` from the backend repository. It creates and removes a uniquely named test database.
+
+## Optional OpenID Connect sign-in
+
+Use Node.js 20.19 or newer. Register a confidential web client with a trusted HTTPS OpenID Connect provider. The provider must support authorization code flow with PKCE S256, query-mode callbacks, signed ID tokens, and `client_secret_post`. Configure the provider's account and passkey policies separately.
+
+- Set `APP_URL` to the frontend origin. Host the API and frontend on the same HTTPS origin in production so the Convo session cookie is available throughout linking and sign-in.
+- Set `OIDC_ISSUER`, `OIDC_CLIENT_ID`, `OIDC_CLIENT_SECRET`, and `OIDC_REDIRECT_URI` on the backend. Register the exact callback URL on the provider, for example `https://convo.example/v1/user/oidc/callback`. Keep the client secret on the backend.
+- Build the frontend with `VITE_CONVO_OIDC_ENABLED=true` after the backend is configured. Serve the callback path through the API rather than the frontend SPA rewrite.
+- Sign in to an existing Convo account, open Settings, and select **Link identity provider**. Future sign-ins use the linked provider identity. Matching email addresses alone never link accounts. Existing sign-in remains available during the pilot.
+
+To test the end-to-end callback locally, run the backend integration suite with a disposable MongoDB and OpenSSL available. It starts a local HTTPS test issuer. A real production provider still needs a staging test.
