@@ -37,6 +37,14 @@ A simple and scalable real-time chat application built with **React**, **Node.js
 
 ---
 
+## Run locally
+
+1. Start MongoDB and clone the [backend repository](https://github.com/inkersal501/chat-app-backend).
+2. In the backend directory, create a `.env` file with `PORT=5000`, `APP_URL=http://localhost:5173`, `MONGODB_URI=mongodb://127.0.0.1:27017/convo`, `NODE_ENV=development`, `JWT_ACCESS_EXPIRATION_MINUTES=60`, and a random secret for `JWTSECRET`. Run `npm ci` and `npm start`.
+3. In the frontend directory, create a `.env.local` file with `VITE_API_BASE_URL=http://localhost:5000/v1` and `VITE_SOCKET_BASE_URL=http://localhost:5000`. Run `npm ci` and `npm run dev`. Open http://localhost:5173.
+
+Deploy the backend before the updated frontend so cursor-based history and message retries can use the updated API.
+
 ## Authentication Flow
 
 - JWT-based login system with protected routes
@@ -60,3 +68,15 @@ A simple and scalable real-time chat application built with **React**, **Node.js
 
 ---
 
+
+## Convo Next pilot
+
+Chats uses the existing messaging service. The People section adds username lookup, friend requests, blocking, muting, and account reports. Feed adds friends and invite-only group audiences for text posts, comments, reactions, and recent activity. Feed content is stored on the server.
+
+Feed is enabled in local development. For a production build, set `CONVO_FEED_ENABLED=true` on the backend and `VITE_CONVO_FEED_ENABLED=true` at frontend build time to opt in. The approved rollout calls for the encrypted-chat pilot before enabling the feed for production users.
+
+Configure `CONVO_MODERATOR_IDS` as a comma-separated list of Convo user IDs authorized to list open reports and record their disposition through the moderation API. Keep this list on the backend. The queue and its audit history are stored in MongoDB.
+
+The current chat service still uses the existing server-readable message storage. The Matrix and shared identity-provider rollout, account linking, device verification and recovery, and migration to a read-only legacy archive are separate deployment milestones.
+
+Run the backend integration test with `MONGODB_TEST_URI=mongodb://127.0.0.1:27017 npm test` from the backend repository. It creates and removes a uniquely named test database.

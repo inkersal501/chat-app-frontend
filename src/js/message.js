@@ -1,11 +1,11 @@
 import axios from "axios";
 import {apiEndpoint} from "./config";
 
-const getMessages = async (chatId) => {
+const getMessages = async (chatId, { before, signal } = {}) => {
     try {
-        const result = await axios.get(`${apiEndpoint}/message/${chatId}`);
+        const result = await axios.get(`${apiEndpoint}/message/${chatId}`, { params: { before }, signal });
         if(result.status === 200){      
-            return {status: true, messages: result.data.list};
+            return {status: true, messages: result.data.list, nextCursor: result.data.nextCursor ?? null};
         }            
     } catch (error) {  
         return {status: false, msg: error.response?.data?.msg || "Unable to load messages."};
